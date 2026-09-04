@@ -1,0 +1,20 @@
+@font-face {
+  font-family: "SF Pro";
+  font-style: normal;
+  font-weight: 510;
+  src: url("https://static.figma.com/font/SF-Pro_1") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  src: url("https://static.figma.com/font/Inter_1") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  src: url("https://static.figma.com/font/Inter_1") format("woff2");
+}
