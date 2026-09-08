@@ -1,1 +1,1 @@
-# POOSD-Small-Project-Team-6
+# POOSD-Contact-Manager-Team-6
