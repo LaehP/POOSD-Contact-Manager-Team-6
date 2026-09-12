@@ -1,4 +1,5 @@
 <?php
+    // NOT COMPLETE
 
     // Read the database connection parameters from the environment variables
     $inData = getRequestInfo();
