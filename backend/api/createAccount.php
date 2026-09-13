@@ -1,12 +1,22 @@
 <?php
-    // NOT COMPLETE: This file is incomplete and does not create a new account. It only checks if the email already exists in the database and returns an error if it does. The code to insert a new user into the database is missing.
-
     $inData = getRequestInfo();
 
-    $firstName = $inData["firstName"];
-    $lastName = $inData["lastName"];
-    $email = $inData["email"];
+    if (!is_array($inData) || !isset($inData["firstName"], $inData["lastName"], $inData["email"], $inData["password"]))
+    {
+        returnWithError("Missing required fields");
+        exit;
+    }
+
+    $firstName = trim($inData["firstName"]);
+    $lastName = trim($inData["lastName"]);
+    $email = trim($inData["email"]);
     $password = $inData["password"];
+
+    if ($firstName === "" || $lastName === "" || $email === "" || $password === "") // Check for empty fields
+    {
+        returnWithError("All fields are required");
+        exit;
+    }
 
     $conn = new mysqli(getenv('DB_HOST'), getenv('DB_USER'), getenv('DB_PASSWORD'), getenv('DB_NAME'));
     if ($conn->connect_error) 
@@ -15,21 +25,45 @@
     } 
     else
     { 
-        $stmt = $conn->prepare("SELECT email FROM Users WHERE email = ?"); // check if a user with the same email already exists
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) 
+        $stmt = $conn->prepare("SELECT Login FROM Users WHERE Login = ?"); 
+        if (!$stmt)
         {
-            returnWithError("Email already exists");
-            $stmt->close();
+            returnWithError($conn->error);
             $conn->close();
             exit;
         }
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stmt->close();
+
+        if ($result->num_rows > 0) // Check if the email already exists in the database
+        {
+            returnWithError("Email already exists");
+            $conn->close();
+            exit;
+        }
+
+        $stmt = $conn->prepare("INSERT INTO Users (FirstName, LastName, Login, Password) VALUES (?, ?, ?, ?)"); // Use a prepared statement to insert the new user into the database
+        if (!$stmt)
+        {
+            returnWithError($conn->error);
+            $conn->close();
+            exit;
+        }
+
+        $stmt->bind_param("ssss", $firstName, $lastName, $email, $password); // Bind the parameters to the prepared statement
+        if ($stmt->execute())
+        {
+            returnWithInfo($firstName, $lastName, $email, $conn->insert_id);
+        }
+        else
+        {
+            returnWithError($stmt->error);
+        }
+
         $stmt->close();
         $conn->close();
-        returnWithError("Failed to create account");
-        exit;
     }
 
     // functions:
@@ -47,14 +81,24 @@
 
     function returnWithError($err)
     {
-        $retValue = '{"ID":0,"firstName":"","lastName":"","email":"","error":"' . $err . '"}';
-        sendResultInfoAsJson($retValue);
+        sendResultInfoAsJson(json_encode([
+            "ID" => 0,
+            "firstName" => "",
+            "lastName" => "",
+            "email" => "",
+            "error" => $err
+        ]));
     }
 
     function returnWithInfo($firstName, $lastName, $email, $id)
     {
-        $retValue = '{"ID":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","email":"' . $email . '","error":""}';
-        sendResultInfoAsJson($retValue);
+        sendResultInfoAsJson(json_encode([
+            "ID" => $id,
+            "firstName" => $firstName,
+            "lastName" => $lastName,
+            "email" => $email,
+            "error" => ""
+        ]));
     }
 
 ?>
