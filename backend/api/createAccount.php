@@ -9,10 +9,10 @@
 
     $firstName = trim($inData["firstName"]);
     $lastName = trim($inData["lastName"]);
-    $email = trim($inData["login"]);
+    $login = trim($inData["login"]);
     $password = $inData["password"];
 
-    if ($firstName === "" || $lastName === "" || $email === "" || $password === "") // Check for empty fields
+    if ($firstName === "" || $lastName === "" || $login === "" || $password === "") // Check for empty fields
     {
         returnWithError("All fields are required");
         exit;
