@@ -1,7 +1,7 @@
 <?php
     $inData = getRequestInfo();
 
-    if (!is_array($inData) || !isset($inData["firstName"], $inData["lastName"], $inData["email"], $inData["password"]))
+    if (!is_array($inData) || !isset($inData["firstName"], $inData["lastName"], $inData["login"], $inData["password"]))
     {
         returnWithError("Missing required fields");
         exit;
@@ -9,7 +9,7 @@
 
     $firstName = trim($inData["firstName"]);
     $lastName = trim($inData["lastName"]);
-    $email = trim($inData["email"]);
+    $email = trim($inData["login"]);
     $password = $inData["password"];
 
     if ($firstName === "" || $lastName === "" || $email === "" || $password === "") // Check for empty fields
@@ -18,7 +18,15 @@
         exit;
     }
 
-    $conn = new mysqli(getenv('DB_HOST'), getenv('DB_USER'), getenv('DB_PASSWORD'), getenv('DB_NAME'));
+    //Manually parse the .env file
+    $envPath = __DIR__ . '/../../.env';
+    if (!file_exists($envPath)) {
+        returnWithError("Configuration file missing");
+        exit;
+    }
+    $env = parse_ini_file($envPath);
+
+    $conn = new mysqli($env['DB_HOST'], $env['DB_USER'], $env['DB_PASSWORD'], $env['DB_NAME']);
     if ($conn->connect_error) 
     {
         returnWithError($conn->connect_error);
@@ -32,19 +40,20 @@
             $conn->close();
             exit;
         }
-        $stmt->bind_param("s", $email);
+        $stmt->bind_param("s", $login);
         $stmt->execute();
         $result = $stmt->get_result();
         $stmt->close();
 
-        if ($result->num_rows > 0) // Check if the email already exists in the database
+        if ($result->num_rows > 0) // Check if the login already exists in the database
         {
-            returnWithError("Email already exists");
+            returnWithError("user already exists");
             $conn->close();
             exit;
         }
 
-        $stmt = $conn->prepare("INSERT INTO Users (FirstName, LastName, Login, Password) VALUES (?, ?, ?, ?)"); // Use a prepared statement to insert the new user into the database
+        // Insert the new user into the database
+        $stmt = $conn->prepare("INSERT INTO Users (FirstName, LastName, Login, Password) VALUES (?, ?, ?, ?)"); 
         if (!$stmt)
         {
             returnWithError($conn->error);
@@ -52,10 +61,10 @@
             exit;
         }
 
-        $stmt->bind_param("ssss", $firstName, $lastName, $email, $password); // Bind the parameters to the prepared statement
+        $stmt->bind_param("ssss", $firstName, $lastName, $login, $password); // Bind the parameters to the prepared statement
         if ($stmt->execute())
         {
-            returnWithInfo($firstName, $lastName, $email, $conn->insert_id);
+            returnWithInfo($firstName, $lastName, $login, $conn->insert_id);
         }
         else
         {
@@ -85,18 +94,18 @@
             "ID" => 0,
             "firstName" => "",
             "lastName" => "",
-            "email" => "",
+            "login" => "",
             "error" => $err
         ]));
     }
 
-    function returnWithInfo($firstName, $lastName, $email, $id)
+    function returnWithInfo($firstName, $lastName, $login, $id)
     {
         sendResultInfoAsJson(json_encode([
             "ID" => $id,
             "firstName" => $firstName,
             "lastName" => $lastName,
-            "email" => $email,
+            "login" => $login,
             "error" => ""
         ]));
     }

@@ -76,9 +76,9 @@
     }
 
     // indicates success
-    function returnWithInfo($firstName, $lastName, $id)
+    function returnWithInfo($firstName, $lastName, $login, $id)
     {
-        $retValue = '{"ID":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","error":""}';
+        $retValue = '{"ID":' . $id . ',"firstName":"' . $firstName . '","lastName":"' . $lastName . '","login":"' . $login . '","error":""}';
         sendResultInfoAsJson($retValue);
     }
 
