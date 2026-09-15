@@ -75,14 +75,14 @@
         $stmt->execute();
         $result = $stmt->get_result();
 
-        // check if a matching user was found
+
         if($row = $result->fetch_assoc())
         {
             returnWithInfo($row['FirstName'], $row['LastName'], $inData["login"], $row['ID']);
         }
         else
         {
-            returnWithError("No Records Found");
+            returnWithError("login or password incorrect");
         }
         
         $stmt->close();
