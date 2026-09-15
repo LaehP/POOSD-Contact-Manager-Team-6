@@ -1,7 +1,5 @@
 <?php
-    // NOT COMPLETE
-
-    // Read the database connection parameters from the environment variables
+    // read the request data
     $inData = getRequestInfo();
 
     // check if the required fields are present in the request data
@@ -11,28 +9,66 @@
         exit;
     }
 
+    // check for empty fields
+    if ($login === "" || $password === "") 
+    {
+        returnWithError("All fields are required");
+        exit;
+    }
+
+    // parse the .env file for database connection parameters
+    $envPath = __DIR__ . '/../../.env';
+    
+    // check if file exists
+    if (!file_exists($envPath)) {
+        returnWithError("Server Configuration Error: .env file not found at " . $envPath);
+        exit;
+    }
+
+    // try to parse it
+    $env = @parse_ini_file($envPath);
+    
+    if ($env === false) {
+         returnWithError("Server Configuration Error: Failed to parse .env file.");
+         exit;
+    }
+
+    // check if required DB keys exist in the parsed file
+    if (!isset($env['DB_HOST'], $env['DB_USER'], $env['DB_PASSWORD'], $env['DB_NAME'])) {
+        returnWithError("Server Configuration Error: Missing database credentials in .env file.");
+        exit;
+    }
+
     $id = 0;
     $fistName = "";
     $lastName = "";
 
-    // parse the .env file to get the database connection parameters /backend/api/ to /html/
-    $envPath = __DIR__ . '/../../.env';
-    if (!file_exists($envPath)) {
-        returnWithError("Configuration file missing");
+    // connect to the database
+    if (!class_exists("mysqli"))
+    {
+        returnWithError("Server Configuration Error: PHP mysqli extension is not enabled.");
         exit;
     }
-    $env = parse_ini_file($envPath);
 
     // Connection to the database using the parameters from the .env file
-     $conn = new mysqli($env['DB_HOST'], $env['DB_USER'], $env['DB_PASSWORD'], $env['DB_NAME']);
-    if($conn->connect_error)
+    try
+    {
+        $conn = new mysqli($env['DB_HOST'], $env['DB_USER'], $env['DB_PASSWORD'], $env['DB_NAME']);
+    }
+    catch (Throwable $exception)
+    {
+        returnWithError("Database connection failed: " . $exception->getMessage());
+        exit;
+    }
+
+    if ($conn->connect_error) 
     {
         returnWithError($conn->connect_error);
-    }
+    } 
     else
     {
         // columns names in user table
-        stmt = $conn->prepare("SELECT ID, FirstName, LastName FROM Users WHERE Login=? AND Password=?");
+        $stmt = $conn->prepare("SELECT ID, FirstName, LastName FROM Users WHERE Login=? AND Password=?");
 
         // bind the parameters to the prepared statement
         $stmt->bind_param("ss", $inData["login"], $inData["password"]);

@@ -1,6 +1,8 @@
 <?php
+    // Read the request data
     $inData = getRequestInfo();
 
+    // Check if all required fields were actually sent
     if (!is_array($inData) || !isset($inData["firstName"], $inData["lastName"], $inData["login"], $inData["password"]))
     {
         returnWithError("Missing required fields");
@@ -12,27 +14,61 @@
     $login = trim($inData["login"]);
     $password = $inData["password"];
 
-    if ($firstName === "" || $lastName === "" || $login === "" || $password === "") // Check for empty fields
+    // Check for empty fields
+    if ($firstName === "" || $lastName === "" || $login === "" || $password === "") 
     {
         returnWithError("All fields are required");
         exit;
     }
 
-    //Manually parse the .env file
+    // parse the .env file for database connection parameters
     $envPath = __DIR__ . '/../../.env';
+    
+    // check if file exists
     if (!file_exists($envPath)) {
-        returnWithError("Configuration file missing");
+        returnWithError("Server Configuration Error: .env file not found at " . $envPath);
         exit;
     }
-    $env = parse_ini_file($envPath);
 
-    $conn = new mysqli($env['DB_HOST'], $env['DB_USER'], $env['DB_PASSWORD'], $env['DB_NAME']);
+    // try to parse it
+    $env = @parse_ini_file($envPath);
+    
+    if ($env === false) {
+         returnWithError("Server Configuration Error: Failed to parse .env file.");
+         exit;
+    }
+
+    // check if required DB keys exist in the parsed file
+    if (!isset($env['DB_HOST'], $env['DB_USER'], $env['DB_PASSWORD'], $env['DB_NAME'])) {
+        returnWithError("Server Configuration Error: Missing database credentials in .env file.");
+        exit;
+    }
+
+    // connect to the database
+    if (!class_exists("mysqli"))
+    {
+        returnWithError("Server Configuration Error: PHP mysqli extension is not enabled.");
+        exit;
+    }
+
+    // connection to the database using the parameters from the .env file
+    try
+    {
+        $conn = new mysqli($env['DB_HOST'], $env['DB_USER'], $env['DB_PASSWORD'], $env['DB_NAME']);
+    }
+    catch (Throwable $exception)
+    {
+        returnWithError("Database connection failed: " . $exception->getMessage());
+        exit;
+    }
+    
     if ($conn->connect_error) 
     {
         returnWithError($conn->connect_error);
     } 
     else
     { 
+        // check if the login already exists
         $stmt = $conn->prepare("SELECT Login FROM Users WHERE Login = ?"); 
         if (!$stmt)
         {
@@ -41,18 +77,26 @@
             exit;
         }
         $stmt->bind_param("s", $login);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $stmt->close();
+        if (!$stmt->execute())
+        {
+            returnWithError($stmt->error);
+            $stmt->close();
+            $conn->close();
+            exit;
+        }
+        $stmt->store_result();
 
-        if ($result->num_rows > 0) // Check if the login already exists in the database
+        if ($stmt->num_rows > 0)
         {
             returnWithError("user already exists");
+            $stmt->close();
             $conn->close();
             exit;
         }
 
-        // Insert the new user into the database
+        $stmt->close();
+
+        // insert the new user into the database
         $stmt = $conn->prepare("INSERT INTO Users (FirstName, LastName, Login, Password) VALUES (?, ?, ?, ?)"); 
         if (!$stmt)
         {
@@ -61,7 +105,7 @@
             exit;
         }
 
-        $stmt->bind_param("ssss", $firstName, $lastName, $login, $password); // Bind the parameters to the prepared statement
+        $stmt->bind_param("ssss", $firstName, $lastName, $login, $password); 
         if ($stmt->execute())
         {
             returnWithInfo($firstName, $lastName, $login, $conn->insert_id);
@@ -75,7 +119,7 @@
         $conn->close();
     }
 
-    // functions:
+    // functions
 
     function getRequestInfo()
     {
@@ -109,5 +153,4 @@
             "error" => ""
         ]));
     }
-
 ?>
