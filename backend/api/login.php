@@ -10,7 +10,7 @@
     }
 
     // check for empty fields
-    if ($login === "" || $password === "") 
+    if ($inData["login"] === "" || $inData["password"] === "") 
     {
         returnWithError("All fields are required");
         exit;
