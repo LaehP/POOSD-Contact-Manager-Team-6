@@ -16,4 +16,10 @@
         $returnValue = '{"error":"' . $err . '"}';
         sendResultInfoAsJson( $returnValue );
     }
+
+    function returnContactInfo( $info )
+	{
+		$retValue = json_encode($info);
+		sendResultInfoAsJson( $retValue );
+	}
 ?>
