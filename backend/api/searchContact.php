@@ -1,7 +1,5 @@
 <?php
-    // server side search, no shared contacts
-    // search contacts in the database with the same first name and or last name given by the user and there contacts and return each contact's FistName, LastName, PhoneNumber. This will allow the user to select which contact they want to view. 
-    // (partial matching) if user searches "Jo" the search algorithm should match everything with "Jo" in it (case insensitive) ie, John, Jones, Jobs
+    // server side search, (partial matching)
 
     // get the request data
     // trim the search term and first name and last name to remove any leading or trailing whitespace
@@ -11,13 +9,12 @@
     $lastName = trim((string)($inData["lastName"] ?? ""));
     $userId = $inData["userId"] ?? "";
 
-    // Check for missing or empty fields before building the LIKE pattern.
+    // check for missing or empty fields before building the LIKE pattern.
     if (($searchTerm === "" && $firstName === "" && $lastName === "") || $userId === "")
     {
         returnWithError("All fields are required");
         exit;
     }
-
 
     // parse the .env file for database connection parameters
     $envPath = __DIR__ . '/../../.env';
@@ -69,13 +66,7 @@
     } 
     else
     {   
-        // Search for the contacts in the database and show all information about the contact by matching information given by the user. This is to confirm that the contacts exist and is associated with the user before showing the contacts.
-    
-        /* 
-        $stmt = $conn->prepare("select FirstName, LastName from Contacts where (FirstName like ? or LastName like ?) and UserID=?");
-		$search = "%" . $inData["search"] . "%";
-		$stmt->bind_param("ss", $search, $search, $inData["userId"]);
-		*/
+        // Search for the contacts in the database and show all information about the contact by matching information given by the user
         
         if ($searchTerm !== "") // if the search term is provided, search by it
         {
