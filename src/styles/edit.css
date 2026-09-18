@@ -89,16 +89,32 @@ body {
 .text-field {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 0;
     width: 100%;
+}
+
+.text-field:nth-of-type(1),
+.text-field:nth-of-type(3) {
+    gap: 2px;
+}
+
+.text-field:nth-of-type(2) input {
+    margin-left: 10px;
+}
+
+.text-field:nth-of-type(3) input {
+    margin-left: -72px;
+    width: 100%;
+    max-width: 320px;
 }
 
 .two-column {
     display: flex;
     flex-direction: row;
-    gap: 12px;
+    gap: 8px;
     width: 100%;
     flex: 1;
+    margin-left: -72px;
 }
 
 .inline-field {
@@ -118,6 +134,21 @@ body {
     min-width: 170px;
     text-align: right;
     flex-shrink: 0;
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.required-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.required-star {
+    color: #d62828;
+    font-size: 30px;
+    line-height: 1;
+    margin-top: -6px;
 }
 
 .text-field input {
@@ -126,8 +157,9 @@ body {
     height: 56px;
     padding: 0 12px;
     font-family: "Caveat", cursive;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 34px;
+    line-height: 1.2;
     color: black;
     outline: none;
     width: 50%;
@@ -165,16 +197,44 @@ body {
     display: inline-block;
 }
 
+.validation-message {
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    width: 100%;
+    min-height: 30px;
+    margin: 0;
+    overflow: hidden;
+    text-align: center;
+    font-family: "Caveat", cursive;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: #d62828;
+}
+
+.validation-message.visible {
+    visibility: visible;
+    opacity: 1;
+}
+
 .save-container {
-    display:flex;
-    justify-content: center;
-    padding-top: 55px;
+    display: grid;
+    grid-template-rows: 30px auto;
+    justify-items: center;
+    align-items: start;
+    padding-top: 27px;
+}
+
+.text-field input.input-invalid {
+    border: 2px solid #d62828;
+    box-shadow: 0 0 0 1px rgba(214, 40, 40, 0.12);
 }
 
 .save-button {
     background: #8CC7E2;
     border: 2px solid #b9d9e8;
-    border-radius: 15px;
+    border-radius: 25px;
     height: 60px;
     width: 200px;
     font-family: "Caveat", cursive;
@@ -215,5 +275,69 @@ body {
 
 .header {
     justify-content: space-between;
+}
+
+.delete-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(120, 150, 170, 0.38);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+}
+
+.delete-modal.hidden {
+    display: none;
+}
+
+.delete-modal-card {
+    background: #f8f1c8;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 18px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+    width: min(420px, 80vw);
+    padding: 28px 24px 20px;
+    font-family: "Caveat", cursive;
+    text-align: center;
+}
+
+.delete-modal-card p {
+    margin: 0 0 20px;
+    font-size: 32px;
+    line-height: 1.2;
+    color: #000;
+}
+
+.delete-modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.modal-button {
+    border: 2px solid #b9d9e8;
+    border-radius: 12px;
+    background: #8CC7E2;
+    color: #fff;
+    font-family: "Caveat", cursive;
+    font-size: 28px;
+    font-weight: 600;
+    padding: 8px 28px;
+    cursor: pointer;
+}
+
+.modal-button:hover {
+    background: #546AC0;
+}
+
+.cancel-button {
+    background: #f2f2f2;
+    color: #1f1f1f;
+    border-color: rgba(0, 0, 0, 0.15);
+}
+
+.cancel-button:hover {
+    background: #e8e8e8;
 }
 
