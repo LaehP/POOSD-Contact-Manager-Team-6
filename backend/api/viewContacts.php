@@ -14,12 +14,16 @@
 
     }
     else {
-        $pullContacts = $conn->prepare("SELECT FirstName, LastName FROM CONTACTS WHERE UserID = ?");
+        $pullContacts = $conn->prepare("SELECT FirstName, LastName, ID FROM CONTACTS WHERE UserID = ?");
         $pullContacts->bind_param("i", $userId);
         $pullContacts->execute();
         $result = $pullContacts->get_result();
         $pullContacts->close();
         $conn->close();
-        sendResultInfoAsJson($result);
+        $contactData = [];
+        while ($row = $result->fetch_assoc()) {
+            $contactData[] = $row;
+        }
+        returnContactInfo($contactData);
     }
 ?>
