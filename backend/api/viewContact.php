@@ -17,11 +17,11 @@
         returnWithError( $conn->connect_error );
     }
     else {
-        $pullContacts = $conn->prepare("SELECT FirstName, LastName, Phone, Email FROM CONTACTS WHERE UserID = ? AND ID = ? ");
-        $pullContacts->bind_param("ii", $userId, $id);
-        $pullContacts->execute();
-        $result = $pullContacts->get_result();
-        $pullContacts->close();
+        $pullContact = $conn->prepare("SELECT FirstName, LastName, Phone, Email FROM CONTACTS WHERE UserID = ? AND ID = ? ");
+        $pullContact->bind_param("ii", $userId, $id);
+        $pullContact->execute();
+        $result = $pullContact->get_result();
+        $pullContact->close();
         $conn->close();
         $contactData = [];
         while ($row = $result->fetch_assoc()) {
