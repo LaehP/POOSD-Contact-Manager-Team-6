@@ -4,6 +4,10 @@
     // Get the request data
     $inData = getRequestInfo();
 
+    $contactFirstName = $inData['contactFirstName'] ?? '';
+    $contactLastName = $inData['contactLastName'] ?? '';
+    $userId = $inData['userId'] ?? '';
+
     // Check for empty fields
     if ($contactFirstName === "" || $contactLastName === "" || $userId === "") 
     {
@@ -33,10 +37,6 @@
         returnWithError("Server Configuration Error: Missing database credentials in .env file.");
         exit;
     }
-
-    $contactFirstName = $inData["contactFirstName"];
-    $contactLastName = $inData["contactLastName"];
-    $userId = $inData["userId"];
 
     // connect to the database
     if (!class_exists("mysqli"))
