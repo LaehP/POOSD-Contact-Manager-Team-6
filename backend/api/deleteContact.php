@@ -4,18 +4,17 @@
     // Get the request data
     $inData = getRequestInfo();
 
-    $contactFirstName = $inData['contactFirstName'] ?? '';
-    $contactLastName = $inData['contactLastName'] ?? '';
     $userId = $inData['userId'] ?? '';
+    $id = $inData['id'] ?? '';
 
     // Check for empty fields
-    if ($contactFirstName === "" || $contactLastName === "" || $userId === "") 
+    if ($id === "" || $userId === "") 
     {
         returnWithError("All fields are required");
         exit;
     }
 
-    //// parse the .env file for database connection parameters
+    // parse the .env file for database connection parameters
     $envPath = __DIR__ . '/../../.env';
 
     // check if file exists
@@ -62,19 +61,20 @@
     } 
     else
     {   
-        // search for the contact in the database and gather the contact information to be deleted
-        $contactSearch = $conn->prepare("SELECT * FROM CONTACTS WHERE ContactFirstName = ? AND ContactLastName = ? AND UserID = ?");
-        $contactSearch->bind_param("si", $contactFirstName, $contactLastName, $userId);
+        // Search for the contact by its ID and owning user.
+        $contactSearch = $conn->prepare("SELECT ID FROM Contacts WHERE ID = ? AND UserID = ?");
+        $contactSearch->bind_param("ii", $id, $userId);
         $contactSearch->execute();
         $contactResult = $contactSearch->get_result();
 
         if ($contactResult->num_rows === 0) {
-            returnWithError("No contact found with the provided ContactFirstName, ContactLastName, and UserID.");
+            returnWithError("No contact found with the provided ID and UserID.");
+            exit;
         }
 
         // remove the contact from the database
-        $contactDeletion = $conn->prepare("DELETE FROM CONTACTS WHERE ContactFirstName = ? AND ContactLastName = ? AND UserID = ?");
-        $contactDeletion->bind_param("ssii", $contactFirstName, $contactLastName, $userId);
+        $contactDeletion = $conn->prepare("DELETE FROM Contacts WHERE ID = ? AND UserID = ?");
+        $contactDeletion->bind_param("ii", $id, $userId);
     
         if ($contactDeletion->execute()) 
         {
@@ -85,7 +85,7 @@
             } 
             else 
             {
-                returnWithError("No contact found with the provided ContactFirstName, ContactLastName, and UserID.");
+                returnWithError("No contact found with the provided ID and UserID.");
             }
         } 
         else 
