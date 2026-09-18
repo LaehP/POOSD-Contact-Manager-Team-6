@@ -2,14 +2,17 @@
     // server side search, no shared contacts
     // search contacts in the database with the same first name and or last name given by the user and there contacts and return each contact's FistName, LastName, PhoneNumber. This will allow the user to select which contact they want to view. 
     // (partial matching) if user searches "Jo" the search algorithm should match everything with "Jo" in it (case insensitive) ie, John, Jones, Jobs
-    // 
 
-
-    // Get the request data
+    // get the request data
+    // trim the search term and first name and last name to remove any leading or trailing whitespace
     $inData = getRequestInfo();
+    $searchTerm = trim((string)($inData["search"] ?? ""));
+    $firstName = trim((string)($inData["firstName"] ?? ""));
+    $lastName = trim((string)($inData["lastName"] ?? ""));
+    $userId = $inData["userId"] ?? "";
 
-    // Check for empty fields
-    if ($inData["search"] === "" || $inData["userId"] === "") 
+    // Check for missing or empty fields before building the LIKE pattern.
+    if (($searchTerm === "" && $firstName === "" && $lastName === "") || $userId === "")
     {
         returnWithError("All fields are required");
         exit;
@@ -39,8 +42,8 @@
         exit;
     }
 
-   $searchResults = "";
-   $searchCount = 0;
+    $searchResults = [];
+    $searchCount = 0;
 
     // connect to the database
     if (!class_exists("mysqli"))
@@ -74,21 +77,46 @@
 		$stmt->bind_param("ss", $search, $search, $inData["userId"]);
 		*/
         
-        $stmt = $conn->prepare("SELECT FirstName, LastName FROM Contacts WHERE (FirstName LIKE ? OR LastName LIKE ? OR CONCAT_WS(' ', FirstName, LastName) LIKE ? ) AND UserID = ?");
-        $search = "%" . trim($inData["search"]) . "%";
-        $stmt->bind_param( "ssss", $search, $search, $search, $inData["userId"] );
+        if ($searchTerm !== "") // if the search term is provided, search by it
+        {
+            $stmt = $conn->prepare("SELECT ID, FirstName, LastName, Phone FROM Contacts WHERE (FirstName LIKE ? OR LastName LIKE ? OR CONCAT_WS(' ', FirstName, LastName) LIKE ?) AND UserID = ?");
+            $search = "%" . $searchTerm . "%";
+            $stmt->bind_param("sssi", $search, $search, $search, $userId);
+        }
+        elseif ($firstName !== "" && $lastName !== "") // if both first name and last name are provided, search by both
+        {
+            $stmt = $conn->prepare("SELECT ID, FirstName, LastName, Phone FROM Contacts WHERE FirstName LIKE ? AND LastName LIKE ? AND UserID = ?");
+            $firstNameSearch = "%" . $firstName . "%";
+            $lastNameSearch = "%" . $lastName . "%";
+            $stmt->bind_param("ssi", $firstNameSearch, $lastNameSearch, $userId);
+        }
+        elseif ($firstName !== "") // if only first name is provided, search by it
+        {
+            $stmt = $conn->prepare("SELECT ID, FirstName, LastName, Phone FROM Contacts WHERE FirstName LIKE ? AND UserID = ?");
+            $firstNameSearch = "%" . $firstName . "%";
+            $stmt->bind_param("si", $firstNameSearch, $userId);
+        }
+        else // if only last name is provided, search by it
+        {
+            $stmt = $conn->prepare("SELECT ID, FirstName, LastName, Phone FROM Contacts WHERE LastName LIKE ? AND UserID = ?");
+            $lastNameSearch = "%" . $lastName . "%";
+            $stmt->bind_param("si", $lastNameSearch, $userId);
+        }
         $stmt->execute();
 		
 		$result = $stmt->get_result();
-		
-		while($row = $result->fetch_assoc())
+
+		// loop through the result set and add each contact to the searchResults array
+		while($row = $result->fetch_assoc()) 
 		{
-			if( $searchCount > 0 )
-			{
-				$searchResults .= ",";
-			}
 			$searchCount++;
-			$searchResults .= '"' . $row["FirstName"] . ' ' . $row["LastName"] . '"';
+            $searchResults[] = 
+            [
+                "id" => (int)$row["ID"],
+                "firstName" => $row["FirstName"],
+                "lastName" => $row["LastName"],
+                "phoneNumber" => $row["Phone"]
+            ];
 		}
 		
 		if( $searchCount == 0 )
@@ -124,7 +152,7 @@
 	
 	function returnWithInfo( $searchResults )
 	{
-		$retValue = '{"results":[' . $searchResults . '],"error":""}';
+        $retValue = json_encode(["results" => $searchResults, "error" => ""]);
 		sendResultInfoAsJson( $retValue );
 	}
 
