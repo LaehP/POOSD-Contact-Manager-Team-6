@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> Edit Contact</title>
+  <link rel="stylesheet" href="../assets/fonts.css">
+  <link rel="stylesheet" href="../styles/edit.css">
+</head>
+
+<body>
+  <div class="screen-card">
+    <div class="header">
+      <a class="back-button" href="contactPage.html" aria-label="Back to contact">^</a>
+      <button class="trash-button" id="deleteButton">
+        <img src="../assets/Trash 2.png" alt="Delete" width="30" height="30">
+      </button>
+    </div>
+
+    <div class="form-body">
+      <div class="text-field">
+        <label for="nameInput">Name</label>
+        <input type="text" id="nameInput" placeholder="Name">
+      </div>
+
+      <div class="text-field">
+        <label for="numberInput">Phone Number</label>
+        <input type="text" id="numberInput" placeholder="Phone Number">
+      </div>
+
+      <div class="text-field">
+        <label for="emailInput">Email</label>
+        <input type="text" id="emailInput" placeholder="Email">
+      </div>
+
+      <div>
+        <div class="date-label">Date Created</div>
+        <div class="date-value" id="dateCreated">09/04/2026</div>
+      </div>
+
+      <div class="save-container">
+        <button class="save-button" id="saveButton">Save</button>
+      </div>
+
+    </div>
+  </div>
+  <!-- <script src="../js/edit.js"></script> -->
+</body>
+</html>
