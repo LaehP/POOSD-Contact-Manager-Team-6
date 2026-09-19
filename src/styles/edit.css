@@ -1,0 +1,164 @@
+body {
+    margin: 0;
+    background: #acd9ee;
+    font-family: "SF Pro", "Inter", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.screen-card {
+    background: white;
+    width: 40%;
+    max-width: 764px;
+    min-height: 100vh;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    background: #8cc7e2;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    flex-shrink: 0;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: "SF Pro", sans-serif;
+    font-weight: 510;
+    font-size: 40px;
+    color: black;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    transform: rotate(270deg);
+    padding: 0;
+}
+
+.form-body {
+    display: flex;
+    flex-direction: column;
+    gap: 70px;
+    padding: 35px 40px 10px;
+    flex: 1;
+}
+
+.text-field {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.text-field label {
+    font-family: "SF Pro", sans-serif;
+    font-size: 20px;
+    font-weight: 510;
+    color: black;
+    font-variation-settings: "wdth" 100;
+}
+
+.text-field input {
+    background: #D9D9D9;
+    border: none;
+    height: 50px;
+    padding: 0 12px;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-size: 22px;
+    color: black;
+    outline: none;
+    width: 60%;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+.text-field input::placeholder {
+    color: #999;
+}
+
+.date-label {
+    font-family: "SF Pro", sans-serif;
+    font-size: 20px;
+    font-weight: 510;
+    color: black;
+    font-variation-settings: "wdth" 100;
+    margin-top: 5px;
+}
+
+.date-value {
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    color: #5A7F90;
+    margin-top: 7px;
+    margin-left: 5px;
+}
+
+.save-container {
+    display:flex;
+    justify-content: center;
+    padding-top: 16px;
+}
+
+.save-button {
+    background: #8CC7E2;
+    border: 2px solid #b9d9e8;
+    border-radius: 15px;
+    height: 70px;
+    width: 250px;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+
+.save-button:hover {
+    border: 2px solid #b9d9e8;
+    opacity: 0.90;
+}
+
+.save-button:active {
+    opacity: 0.7;
+}
+
+.trash-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #000;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    opacity: 1;
+}
+
+.trash-button:hover {
+    opacity: 0.5;
+}
+
+.header {
+    justify-content: space-between;
+}
+
+.contact-name {
+    font-family: "SF Pro", sans-serif;
+    font-size: 40px;
+    font-weight: 300;
+    color: #000;
+    margin-top: 30px;
+}
+
