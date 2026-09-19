@@ -184,42 +184,38 @@ definitions:
   viewContact:
     type: object
     required:
-    - email
-    - firstName
-    - id
-    - lastName
-    - phoneNumber
-    - userId
+    - Email
+    - FirstName
+    - LastName
+    - Phone
+    - date_added
     properties:
-      firstName:
+      FirstName:
         type: string
         example: John
-      lastName:
+      LastName:
         type: string
         example: Doe
-      phoneNumber:
+      Phone:
         type: string
         example: (555)-555-5555
-      email:
+      Email:
         type: string
         example: name@gmail.com
-      userId:
-        type: integer
-        example: 1
-      id:
-        type: integer
-        example: 1
+      date_added:
+        type: string
+        example: 2026-09-17 (year-month-day)
   viewContacts:
     type: object
     required:
-    - firstName
+    - FirstName
+    - LastName
     - id
-    - lastName
     properties:
-      firstName:
+      FirstName:
         type: string
         example: John
-      lastName:
+      LastName:
         type: string
         example: Doe
       id:
