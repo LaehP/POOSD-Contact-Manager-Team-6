@@ -4,12 +4,11 @@
     require_once "databaseConnection.php";
     require_once "frontendInfo.php";
 
-
-    $conn = new mysqli('localhost', 'root', 'password', 'SmallProject');
+    $conn = connectToDatabase();
 
     $inData = getRequestInfo(); 
     if ($inData === null) {
-        returnWithError("JSON decode failed");
+        die("JSON decode failed");
     }
     if (!array_key_exists("firstName", $inData) && !array_key_exists("lastName", $inData) && !array_key_exists("phoneNumber", $inData) && !array_key_exists("email", $inData)) {
         returnWithError("Minimum contact information not defined. Must include first name, last name, phone number, and email.");

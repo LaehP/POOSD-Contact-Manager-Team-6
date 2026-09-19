@@ -1,12 +1,14 @@
 <?php 
     function connectToDatabase() {
-        $host = getenv('DB_HOST');
-        $databaseName = getenv('DB_NAME');
-        $user = getenv('DB_USER');
-        $password = getenv('DB_PASSWORD');
+        $envPath = __DIR__ . '/../../.env';
+        $config = parse_ini_file($envPath);
 
-        $conn = new mysqli($host, $databaseName, $user, $password);
-        
+        if ($config === false) {
+            die("Unable to load environment configuration.");
+        }
+
+        $conn = new mysqli($config['DB_HOST'], $config['DB_USER'], $config['DB_PASSWORD'], $config['DB_NAME']);
+
         return $conn;
     }
 ?>
