@@ -341,7 +341,96 @@ body {
     background: #e8e8e8;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 715px) and (max-width: 1190px) {
+    body {
+        background: #acd9ee;
+    }
+
+    .screen-card {
+        width: 70%;
+        max-width: 100%;
+        min-height: 100vh;
+        box-shadow: none;
+    }
+
+    .header {
+        background: #8cc7e2;
+        height: 80px;
+        padding: 18px 20px 0;
+        box-shadow: none;
+    }
+
+    .back-button {
+        margin-top: -1px;
+        font-size: 24px;
+    }
+
+    .form-body {
+        gap: 76px;
+        padding: 110px 18px 40px 18px;
+    }
+
+    .text-field {
+        gap: 12px;
+    }
+
+    .text-field label {
+        min-width: 0;
+        text-align: left;
+        font-size: 28px;
+    }
+
+    .text-field:nth-of-type(1) .two-column {
+        margin-left: 0;
+        transform: translateX(9px);
+    }
+
+    .text-field:nth-of-type(2) input {
+        margin-left: 0;
+        width: 50%;
+        max-width: none;
+    }
+
+    .text-field:nth-of-type(3) input {
+        margin-left: 0;
+        width: 50%;
+        max-width: none;
+        transform: translateX(9px);
+    }
+
+    .text-field input {
+        width: 100%;
+        max-width: none;
+        height: 48px;
+        font-size: 24px;
+    }
+
+    .date-label,
+    .date-value {
+        font-size: 28px;
+    }
+
+    .validation-message {
+        font-size: 24px;
+        margin-bottom: 6px;
+        transform: translateY(-8px);
+    }
+
+    .save-container {
+        grid-template-rows: auto auto;
+        row-gap: 6px;
+        padding-top: 6px;
+    }
+
+    .save-button {
+        font-size: 34px;
+        height: 54px;
+        width: 180px;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 714px) {
     body {
         background: #FFF8C8;
     }
@@ -387,13 +476,20 @@ body {
         font-size: 24px;
     }
 
+    
+    .text-field:nth-of-type(2) input {
+        margin-left: 0;
+        width: 50%;
+        max-width: none;
+    }
+
     .text-field:nth-of-type(3) {
         gap: 10px;
     }
 
     .text-field:nth-of-type(3) input {
         margin-left: 0;
-        width: 100%;
+        width: 50%;
         max-width: none;
     }
 
@@ -411,13 +507,21 @@ body {
 
     .validation-message {
         font-size: 24px;
+        margin-bottom: 6px;
+        transform: translateY(-8px);
+    }
+
+    .save-container {
+        grid-template-rows: auto auto;
+        row-gap: 6px;
+        padding-top: 6px;
     }
 
     .save-button {
         font-size: 34px;
         height: 54px;
         width: 180px;
-        transform: translateY(-63px);
+        transform: translateY(-14px);
     }
 
     .delete-modal-card p {
