@@ -1,0 +1,227 @@
+swagger: "2.0"
+info:
+  description: This is the API documentation for Team 6's Small Project in COP4331
+  version: 1.0.0
+  title: Contacts Website
+  contact:
+    email: mi544275@ucf.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: cop4431-jonathonf.online
+basePath: /POOSD-Contact-Manager-Team-6/backend/api
+tags:
+- name: admins
+  description: Secured Admin-only calls
+- name: developers
+  description: Operations available to regular developers
+- name: users
+  description: Operations available to regular users
+schemes:
+- http
+paths:
+  /addContact.php:
+    post:
+      tags:
+      - users
+      summary: Adds contact to Contacts table that is associated with the user's id
+      description: "By passing in the required contact information, and userId, you can add a new contact to the contacts table. The row will be associated with the user's id."
+      operationId: addContact
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: contactInformatiom
+        description: "the information required to add a contact, including userId"
+        required: false
+        schema:
+          $ref: "#/definitions/addContactInfo"
+      responses:
+        "200":
+          description: Returns 'Contact created' message and id
+          schema:
+            $ref: "#/definitions/addContactResponse"
+        "400":
+          description: bad input parameter
+        "404":
+          description: User not found for given userId
+        "500":
+          description: server errors encountered such as issues connecting to and making requests from the database or decoding data from the JSON file
+  /viewContacts.php:
+    get:
+      tags:
+      - users
+      summary: Returns the first and last name and id number for a given userId
+      description: "Pass the userId as a parameter on the url, and receive a JSON with the first name, last name, and id number for every contact associated with that userId."
+      operationId: viewContacts
+      produces:
+      - application/JSON
+      parameters:
+      - name: userId
+        in: query
+        description: The unique identifier tied to the user.
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/viewContacts"
+        "400":
+          description: bad input parameter
+        "500":
+          description: server errors encountered such as issues connecting to and making requests from the database
+  /viewContact.php:
+    get:
+      tags:
+      - users
+      summary: Returns the first and last name and id number for a given userId
+      description: "Pass the userId as a parameter on the url, and receive a JSON with the first name, last name, and id number for every contact associated with that userId."
+      operationId: viewContact
+      produces:
+      - application/JSON
+      parameters:
+      - name: userId
+        in: query
+        description: The unique identifier tied to the user.
+        required: true
+        type: integer
+      - name: id
+        in: query
+        description: The unique identifier tied to the contact.
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Contact is pulled success
+          schema:
+            $ref: "#/definitions/viewContact"
+        "400":
+          description: bad input parameter
+        "404":
+          description: contact not found
+        "500":
+          description: server errors encountered such as issues connecting to and making requests from the database
+  /login.php:
+    post:
+      tags:
+      - users
+      summary: login to user account
+      description: logs into Personal Contact Manager
+      operationId: doLogin
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: loginItem
+        description: login
+        required: false
+        schema:
+          $ref: "#/definitions/login"
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: URL not found
+        "500":
+          description: Server Error
+definitions:
+  addContactInfo:
+    type: object
+    required:
+    - email
+    - firstName
+    - lastName
+    - phoneNumber
+    - userId
+    properties:
+      firstName:
+        type: string
+        example: John
+      lastName:
+        type: string
+        example: Doe
+      phoneNumber:
+        type: string
+        example: (555)-555-5555
+      email:
+        type: string
+        example: name@gmail.com
+      userId:
+        type: integer
+        example: 1
+  addContactResponse:
+    type: object
+    required:
+    - id
+    - message
+    properties:
+      message:
+        type: string
+        example: Contact created
+      id:
+        type: number
+        example: 1.0
+        description: the unique identifier for the contact's row on the Contacts table
+  login:
+    type: object
+    required:
+    - login
+    - password
+    properties:
+      login:
+        type: string
+        example: JohnD
+      password:
+        type: string
+        example: password
+  viewContact:
+    type: object
+    required:
+    - email
+    - firstName
+    - id
+    - lastName
+    - phoneNumber
+    - userId
+    properties:
+      firstName:
+        type: string
+        example: John
+      lastName:
+        type: string
+        example: Doe
+      phoneNumber:
+        type: string
+        example: (555)-555-5555
+      email:
+        type: string
+        example: name@gmail.com
+      userId:
+        type: integer
+        example: 1
+      id:
+        type: integer
+        example: 1
+  viewContacts:
+    type: object
+    required:
+    - firstName
+    - id
+    - lastName
+    properties:
+      firstName:
+        type: string
+        example: John
+      lastName:
+        type: string
+        example: Doe
+      id:
+        type: integer
+        example: 1
