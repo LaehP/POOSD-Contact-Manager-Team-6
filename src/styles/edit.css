@@ -341,3 +341,99 @@ body {
     background: #e8e8e8;
 }
 
+@media (max-width: 768px) {
+    body {
+        background: #FFF8C8;
+    }
+
+    .screen-card {
+        width: 100%;
+        max-width: 100%;
+        min-height: 100vh;
+        box-shadow: none;
+    }
+
+    .header {
+        background: #8cc7e2;
+        height: 80px;
+        padding: 18px 20px 0;
+        box-shadow: none;
+    }
+
+    .back-button {
+        margin-top: -1px;
+        font-size: 24px;
+    }
+
+    .form-body {
+        gap: 80px;
+        padding: 100px 18px 40px 18px;
+    }
+
+    .text-field {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .text-field:nth-of-type(1) .two-column {
+        margin-left: 0;
+        transform: translateX(5px);
+    }
+
+    .text-field label {
+        min-width: 0;
+        text-align: left;
+        font-size: 24px;
+    }
+
+    .text-field:nth-of-type(3) {
+        gap: 10px;
+    }
+
+    .text-field:nth-of-type(3) input {
+        margin-left: 0;
+        width: 100%;
+        max-width: none;
+    }
+
+    .text-field input {
+        width: 100%;
+        max-width: none;
+        height: 48px;
+        font-size: 24px;
+    }
+
+    .date-label,
+    .date-value {
+        font-size: 24px;
+    }
+
+    .validation-message {
+        font-size: 24px;
+    }
+
+    .save-button {
+        font-size: 34px;
+        height: 54px;
+        width: 180px;
+        transform: translateY(-63px);
+    }
+
+    .delete-modal-card p {
+        font-size: 26px;
+    }
+
+    .modal-button {
+        font-size: 24px;
+    }
+
+    .two-column {
+        margin-left: 0;
+    }
+
+    .save-container {
+        padding-top: 20px;
+    }
+}
+
