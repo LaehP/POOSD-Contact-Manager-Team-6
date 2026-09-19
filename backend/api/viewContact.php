@@ -22,7 +22,7 @@
         exit;
     }
     else {
-        $pullContact = $conn->prepare("SELECT FirstName, LastName, Phone, Email FROM CONTACTS WHERE UserID = ? AND ID = ? ");
+        $pullContact = $conn->prepare("SELECT FirstName, LastName, Phone, Email, date_added FROM CONTACTS WHERE UserID = ? AND ID = ? ");
         $pullContact->bind_param("ii", $userId, $id);
         if (!($pullContact->execute())) {
             http_response_code(500);
