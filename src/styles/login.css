@@ -1,6 +1,6 @@
 body {
     background-color: #acd9ee;
-    font-family: "SF Pro", "Inter", sans-serif;
+    font-family: "Caveat", cursive;
     margin: 0;
     display: flex;
     justify-content: center;
@@ -36,6 +36,7 @@ body {
     border: none;
 
     background-color: #D9D9D9;
+    font-family: "Caveat", cursive;
     font-size: 24px;
 
 }
@@ -51,6 +52,7 @@ body {
     border: none;
 
     background-color: #8CC7E2;
+    font-family: "Caveat", cursive;
     font-size: 30px;
     color: #FFFFFF;
 }
