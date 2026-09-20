@@ -24,10 +24,10 @@ async function loginValidation (){
     else{
         //data error
         userBox.style.borderColor = "red";
-        userBox.style.backgroundColor = "pink";
+        userBox.style.backgroundColor = "#fff0f0";
 
         passwordBox.style.borderColor = "red";
-        passwordBox.style.backgroundColor = "pink";
+        passwordBox.style.backgroundColor = "#fff0f0";
 
         const alert = document.getElementById("incorrect-login-alert");
         alert.style.display = "block";

@@ -97,3 +97,14 @@ body {
     top: calc(50% + 150px);
     
 }
+
+#signup-alert {
+    display: none; 
+    position: absolute;
+
+    color: red;
+    font-size: 24px;
+    margin: 0;
+
+    top: calc(50% + 345px);
+}
