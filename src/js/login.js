@@ -1,6 +1,9 @@
 async function loginValidation (){
-    const email = document.getElementById("login-email-box").value.trim();
-    const password = document.getElementById("login-password-box").value;
+    const userBox = document.getElementById("login-email-box");
+    const passwordBox = document.getElementById("login-password-box");
+
+    const email = userBox.value.trim();
+    const password = passwordBox.value;
 
     const response = await fetch("http://cop4431-jonathonf.online/backend/api/login.php", {
         method: "POST",
@@ -20,7 +23,14 @@ async function loginValidation (){
     }
     else{
         //data error
-        window.alert("Incorrect Username or Password");
+        userBox.style.borderColor = "red";
+        userBox.style.backgroundColor = "pink";
+
+        passwordBox.style.borderColor = "red";
+        passwordBox.style.backgroundColor = "pink";
+
+        const alert = document.getElementById("incorrect-login-alert");
+        alert.style.display = "block";
     }
 
 
