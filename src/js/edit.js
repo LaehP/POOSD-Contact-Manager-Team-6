@@ -116,7 +116,7 @@ function setFormValues(contact) {
   if (lastName) lastName.value = contact.LastName || '';
   if (phone) phone.value = contact.Phone || '';
   if (email) email.value = contact.Email || '';
-  if (date) date.textContent = contact.date_added ? formatDateForDisplay(contact.date_added) : getTodayDateLabel();
+  if (date) date.textContent = contact.date_added ? contact.date_added : getTodayDateLabel();
 }
 
 function initializeDateField() {
