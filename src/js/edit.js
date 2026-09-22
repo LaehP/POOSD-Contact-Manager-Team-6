@@ -28,6 +28,7 @@ function setupBackButton() {
   const userId = getUserId();
   const contactId = getQueryValue('id');
 
+  // If editing existing contact, back button goes to contact page
   if (contactId) {
     backButton.href = `contactPage.html?userId=${userId}&id=${contactId}`;
     backButton.setAttribute('aria-label', 'Back to contact');
@@ -35,18 +36,33 @@ function setupBackButton() {
     return;
   }
 
+  // If new contact, back button goes to home page
   backButton.href = `homePage.html?userId=${userId}`;
   backButton.setAttribute('aria-label', 'Back to home');
   if (deleteButton) deleteButton.classList.add('hidden');
 }
 
+// Get the userId from the query string or Local Storage
 function getUserId() {
   const storedUserId = localStorage.getItem('userId');
-  const userId = getQueryValue('userId') || storedUserId || '1';
+  const userId = getQueryValue('userId') || storedUserId;
+
+  // If the user is not logged in, redirect to login page
+  if (userId === null || userId === undefined || userId === '') {
+    localStorage.removeItem('userId');
+
+    if (!window.location.pathname.endsWith('loginPage.html')) {
+      window.location.href = 'loginPage.html';
+    }
+
+    return null;
+  }
+
   localStorage.setItem('userId', userId);
   return Number(userId);
 }
 
+// Shows validation message and highlights missing fields
 function showValidationMessage() {
   if (!validationMessage) return;
   validationMessage.textContent = 'Required fields are missing. *';
@@ -58,6 +74,7 @@ function showValidationMessage() {
   });
 }
 
+// Clears validation message and removes highlight from fields
 function clearValidationMessage() {
   if (!validationMessage) return;
   validationMessage.textContent = '';
@@ -69,10 +86,12 @@ function clearValidationMessage() {
   });
 }
 
+// Checks that all required fields have values
 function hasRequiredValues() {
   return requiredFields.every((field) => field && field.value.trim() !== '');
 }
 
+// Checks if fields are empty or not
 function updateFieldValidity() {
   requiredFields.forEach((field) => {
     if (!field) return;
@@ -81,30 +100,19 @@ function updateFieldValidity() {
   });
 }
 
-function formatDateForDisplay(dateValue) {
-  if (!dateValue) return 'N/A';
-
-  const date = new Date(dateValue);
-  if (Number.isNaN(date.getTime())) {
-    return dateValue;
-  }
-
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const year = date.getFullYear();
-
-  return `${year}-${month}-${day}`;
-}
-
+// Get the current date and format it to match date in database for date created field
 function getTodayDateLabel() {
   const today = new Date();
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0'); //Months start at 0 so add 1 for current month
+
+  // Uses getDate() instead of getDay() to get number of the day in the month
+  const day = String(today.getDate()).padStart(2, '0'); 
   const year = today.getFullYear();
 
   return `${year}-${month}-${day}`;
 }
 
+// Load the contact data into form for editing if contact exists 
 function setFormValues(contact) {
   const firstName = document.getElementById('firstNameInput');
   const lastName = document.getElementById('lastNameInput');
@@ -119,6 +127,7 @@ function setFormValues(contact) {
   if (date) date.textContent = contact.date_added ? contact.date_added : getTodayDateLabel();
 }
 
+// Add the current date to the date created field if it's empty
 function initializeDateField() {
   const date = document.getElementById('dateCreated');
   if (!date) return;
@@ -128,6 +137,7 @@ function initializeDateField() {
   }
 }
 
+// Load the contact data for editing if an id is present in the query string
 async function loadContactForEdit() {
   const userId = getUserId();
   const contactId = getQueryValue('id');
@@ -137,6 +147,7 @@ async function loadContactForEdit() {
     return;
   }
 
+  // Get the contact data from the backend API
   const url = `${apiBase}/viewContact.php?userId=${userId}&id=${contactId}`;
 
   try {
@@ -157,6 +168,7 @@ async function loadContactForEdit() {
       throw new Error(payload.error);
     }
 
+    // If the contact exists load the data into the form, otherwise initialize date field for new contact
     const contact = Array.isArray(payload) ? payload[0] : payload;
     if (contact) {
       setFormValues(contact);
@@ -178,6 +190,7 @@ function handleSave() {
   const contactId = getQueryValue('id');
   const payload = contactId
     ? {
+        // if editing an existing contact include contactId 
         firstName: document.getElementById('firstNameInput')?.value.trim() || '',
         lastName: document.getElementById('lastNameInput')?.value.trim() || '',
         phoneNumber: document.getElementById('numberInput')?.value.trim() || '',
@@ -186,6 +199,7 @@ function handleSave() {
         id: Number(contactId)
       }
     : {
+        // if adding a new contact don't include contactId
         firstName: document.getElementById('firstNameInput')?.value.trim() || '',
         lastName: document.getElementById('lastNameInput')?.value.trim() || '',
         phoneNumber: document.getElementById('numberInput')?.value.trim() || '',
@@ -193,8 +207,10 @@ function handleSave() {
         userId
       };
 
+  // Determine if the contact is being added or edited and call the apropriate API
   const endpoint = `${apiBase}/${contactId ? 'editContact.php' : 'addContact.php'}`;
 
+  // Save the contact data to the backend API
   const saveContact = async () => {
     try {
       const response = await fetch(endpoint, {
@@ -219,6 +235,7 @@ function handleSave() {
         throw new Error(result.error || 'Unable to save contact.');
       }
 
+      // Redirect to contact page with the new or updated contact data
       clearValidationMessage();
       const nextId = result.id || contactId;
       localStorage.setItem('selectedContactId', String(nextId));
@@ -233,7 +250,9 @@ function handleSave() {
   saveContact();
 }
 
+
 if (deleteButton && deleteModal && cancelDelete && confirmDelete) {
+  // Show the delete popup when delete button is clicked
   deleteButton.addEventListener('click', () => {
     if (deleteTitle) {
       deleteTitle.textContent = 'Are you sure you want to delete this contact?';
@@ -241,6 +260,7 @@ if (deleteButton && deleteModal && cancelDelete && confirmDelete) {
     deleteModal.classList.remove('hidden');
   });
 
+  // Hide the delete popup when cancel is clicked
   cancelDelete.addEventListener('click', () => {
     if (deleteTitle) {
       deleteTitle.textContent = 'Are you sure you want to delete this contact?';
@@ -248,6 +268,7 @@ if (deleteButton && deleteModal && cancelDelete && confirmDelete) {
     deleteModal.classList.add('hidden');
   });
 
+  // If confirm is clicked return the user to the homepage and delete contact
   confirmDelete.addEventListener('click', async () => {
     const userId = getUserId();
     const contactId = getQueryValue('id');
@@ -259,6 +280,7 @@ if (deleteButton && deleteModal && cancelDelete && confirmDelete) {
     }
 
     try {
+      // Call delete contact API
       const response = await fetch(`${apiBase}/deleteContact.php`, {
         method: 'POST',
         headers: {
@@ -295,15 +317,18 @@ if (deleteButton && deleteModal && cancelDelete && confirmDelete) {
   });
 }
 
+// Call handleSave when save button is clicked
 if (saveButton) {
   saveButton.addEventListener('click', handleSave);
 }
 
+// Call setupBackButton to set the back button based on whether editing or adding a contact
 setupBackButton();
 
 requiredFields.forEach((field) => {
   if (!field) return;
-
+  
+  // Check for input changes and update the validation message and field highlighting
   field.addEventListener('input', () => {
     if (!validationMessage || !validationMessage.classList.contains('visible')) {
       return;
