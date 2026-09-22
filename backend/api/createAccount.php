@@ -3,7 +3,7 @@
     $inData = getRequestInfo();
 
     // Check if all required fields were actually sent
-    if (!is_array($inData) || !isset($inData["firstName"], $inData["lastName"], $inData["login"], $inData["password"]))
+    if (!is_array($inData) || !isset($inData["firstName"], $inData["lastName"], $inData["login"], $inData["password"], $inData["phoneNumber"]))
     {
         returnWithError("Missing required fields");
         exit;
@@ -13,9 +13,10 @@
     $lastName = trim($inData["lastName"]);
     $login = trim($inData["login"]);
     $password = $inData["password"];
+    $phoneNumber = trim($inData["phoneNumber"] ?? '');
 
     // Check for empty fields
-    if ($firstName === "" || $lastName === "" || $login === "" || $password === "") 
+    if ($firstName === "" || $lastName === "" || $login === "" || $password === "" || $phoneNumber === "") 
     {
         returnWithError("All fields are required");
         exit;
@@ -97,7 +98,7 @@
         $stmt->close();
 
         // insert the new user into the database
-        $stmt = $conn->prepare("INSERT INTO Users (FirstName, LastName, Login, Password) VALUES (?, ?, ?, ?)"); 
+        $stmt = $conn->prepare("INSERT INTO Users (FirstName, LastName, Login, Password, PhoneNumber) VALUES (?, ?, ?, ?, ?)"); 
         if (!$stmt)
         {
             returnWithError($conn->error);
@@ -105,10 +106,10 @@
             exit;
         }
 
-        $stmt->bind_param("ssss", $firstName, $lastName, $login, $password); 
+        $stmt->bind_param("ssss", $firstName, $lastName, $login, $password, $phoneNumber); 
         if ($stmt->execute())
         {
-            returnWithInfo($firstName, $lastName, $login, $conn->insert_id);
+            returnWithInfo($firstName, $lastName, $login, $phoneNumber, $conn->insert_id);
         }
         else
         {
@@ -126,30 +127,32 @@
         return json_decode(file_get_contents('php://input'), true);
     }
 
-    function sendResultInfoAsJson($obj)
+    function sendResultInfoAsJson(string $obj)
     {
         header('Content-type: application/json');
         echo $obj;
     }
 
-    function returnWithError($err)
+    function returnWithError(string $err)
     {
         sendResultInfoAsJson(json_encode([
             "ID" => 0,
             "firstName" => "",
             "lastName" => "",
             "login" => "",
+            "phoneNumber" => "",
             "error" => $err
         ]));
     }
 
-    function returnWithInfo($firstName, $lastName, $login, $id)
+    function returnWithInfo(string $firstName, string $lastName, string $login, string $phoneNumber, int $id)
     {
         sendResultInfoAsJson(json_encode([
             "ID" => $id,
             "firstName" => $firstName,
             "lastName" => $lastName,
             "login" => $login,
+            "phoneNumber" => $phoneNumber,
             "error" => ""
         ]));
     }
