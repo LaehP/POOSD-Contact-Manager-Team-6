@@ -99,12 +99,9 @@ body {
 }
 
 #signup-alert {
-    display: none; 
-    position: absolute;
+    display: none;
+    margin: -15px 0 0;
 
     color: red;
     font-size: 24px;
-    margin: 0;
-
-    top: calc(50% + 345px);
 }
