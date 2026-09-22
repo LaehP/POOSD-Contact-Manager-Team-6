@@ -19,7 +19,7 @@ async function createAccount() {
             lastName: lastName,
             login: email,
             password: password,
-            phone: phoneNum
+            phoneNumber: phoneNum
         })
     });
 
