@@ -6,15 +6,29 @@ function getQueryValue(name) {
 
 function getUserId() {
   const storedUserId = localStorage.getItem('userId');
-  const userId = getQueryValue('userId') || storedUserId || '1';
+  const userId = getQueryValue('userId') || storedUserId;
+
+  // Redirect to the login page if user is not logged in
+  if (userId === null || userId === undefined || userId === '') {
+    localStorage.removeItem('userId');
+
+    if (!window.location.pathname.endsWith('loginPage.html')) {
+      window.location.href = 'loginPage.html';
+    }
+
+    return null;
+  }
+
   localStorage.setItem('userId', userId);
   return Number(userId);
 }
 
+// Load contact details when the page is loaded
 async function loadContact() {
   const userId = getUserId();
   const contactId = getQueryValue('id') || localStorage.getItem('selectedContactId') || localStorage.getItem('lastSavedContactId');
 
+  // If contactId does not exist display message
   if (!contactId) {
     const contactName = document.getElementById('contactName');
     if (contactName) contactName.textContent = 'No contact selected';
@@ -23,6 +37,7 @@ async function loadContact() {
 
   const url = `${apiBase}/viewContact.php?userId=${userId}&id=${contactId}`;
 
+  // Fetch contact details from view contact API
   try {
     const response = await fetch(url, {
       method: 'GET',
@@ -46,6 +61,7 @@ async function loadContact() {
       throw new Error('Contact not found.');
     }
 
+    // Display contact details on page and show N/A for missing values
     const fullName = `${contact.FirstName || ''} ${contact.LastName || ''}`.trim();
     const contactName = document.getElementById('contactName');
     if (contactName) contactName.textContent = fullName || 'Unnamed contact';
@@ -61,11 +77,13 @@ async function loadContact() {
 
     localStorage.setItem('selectedContactId', contactId);
 
+    // Set the edit link to include the userId and contactId in the query parameters
     const editLink = document.querySelector('.edit-button');
     if (editLink) {
       editLink.href = `editPage.html?userId=${userId}&id=${contactId}`;
     }
 
+    // Set the back button to return to the homepage with the userId in the query parameters
     const backLink = document.getElementById('backButton');
     if (backLink) {
       backLink.href = `homePage.html?userId=${userId}`;
