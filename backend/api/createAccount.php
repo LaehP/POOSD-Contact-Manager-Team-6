@@ -3,7 +3,7 @@
     $inData = getRequestInfo();
 
     // Check if all required fields were actually sent
-    if (!is_array($inData) || !isset($inData["firstName"], $inData["lastName"], $inData["login"], $inData["password"], $inData["phone"]))
+    if (!is_array($inData) || !isset($inData["firstName"], $inData["lastName"], $inData["login"], $inData["password"]))
     {
         returnWithError("Missing required fields");
         exit;
@@ -13,10 +13,9 @@
     $lastName = trim($inData["lastName"]);
     $login = trim($inData["login"]);
     $password = $inData["password"];
-    $phone = trim($inData["phone"]);
 
     // Check for empty fields
-    if ($firstName === "" || $lastName === "" || $login === "" || $password === "" || $phone === "") 
+    if ($firstName === "" || $lastName === "" || $login === "" || $password === "") 
     {
         returnWithError("All fields are required");
         exit;
@@ -98,7 +97,7 @@
         $stmt->close();
 
         // insert the new user into the database
-        $stmt = $conn->prepare("INSERT INTO Users (FirstName, LastName, Login, Password, Phone) VALUES (?, ?, ?, ?, ?)"); 
+        $stmt = $conn->prepare("INSERT INTO Users (FirstName, LastName, Login, Password) VALUES (?, ?, ?, ?)"); 
         if (!$stmt)
         {
             returnWithError($conn->error);
@@ -106,7 +105,7 @@
             exit;
         }
 
-        $stmt->bind_param("sssss", $firstName, $lastName, $login, $password, $phone); 
+        $stmt->bind_param("ssss", $firstName, $lastName, $login, $password); 
         if ($stmt->execute())
         {
             returnWithInfo($firstName, $lastName, $login, $conn->insert_id);
