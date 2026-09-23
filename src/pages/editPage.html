@@ -11,39 +11,57 @@
 <body>
   <div class="screen-card">
     <div class="header">
-      <a class="back-button" href="contactPage.html" aria-label="Back to contact">^</a>
-      <button class="trash-button" id="deleteButton">
+      <a class="back-button" href="contactPage.html" aria-label="Back to contact">Back</a>
+      <button class="trash-button" id="deleteButton" type="button" aria-label="Delete contact">
         <img src="../assets/Trash 2.png" alt="Delete" width="30" height="30">
       </button>
     </div>
 
+    <div class="delete-modal hidden" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+      <div class="delete-modal-card">
+        <p id="deleteTitle">Are you sure you want to delete this contact?</p>
+        <div class="delete-modal-actions">
+          <button class="modal-button confirm-button" id="confirmDelete" type="button">Yes</button>
+          <button class="modal-button cancel-button" id="cancelDelete" type="button">Cancel</button>
+        </div>
+      </div>
+    </div>
+
     <div class="form-body">
       <div class="text-field">
-        <label for="nameInput">Name</label>
-        <input type="text" id="nameInput" placeholder="Name">
+        <label class="required-label" for="firstNameInput">Name:<span class="required-star">*</span></label>
+        <div class="two-column">
+          <div class="inline-field">
+            <input type="text" id="firstNameInput" placeholder="John">
+          </div>
+          <div class="inline-field">
+            <input type="text" id="lastNameInput" placeholder="Doe">
+          </div>
+        </div>
       </div>
 
       <div class="text-field">
-        <label for="numberInput">Phone Number</label>
-        <input type="text" id="numberInput" placeholder="Phone Number">
+        <label class="required-label" for="numberInput">Phone Number:<span class="required-star">*</span></label>
+        <input type="text" id="numberInput" placeholder="(555) 123-4567">
       </div>
 
       <div class="text-field">
-        <label for="emailInput">Email</label>
-        <input type="text" id="emailInput" placeholder="Email">
+        <label class="required-label" for="emailInput">Email:<span class="required-star">*</span></label>
+        <input type="text" id="emailInput" placeholder="example@email.com">
       </div>
 
       <div>
-        <div class="date-label">Date Created</div>
+        <div class="date-label">Date Created:</div>
         <div class="date-value" id="dateCreated">09/04/2026</div>
       </div>
 
       <div class="save-container">
+        <p class="validation-message" id="validationMessage" aria-live="polite"></p>
         <button class="save-button" id="saveButton">Save</button>
       </div>
 
     </div>
   </div>
-  <!-- <script src="../js/edit.js"></script> -->
+  <script src="../js/edit.js"></script>
 </body>
 </html>

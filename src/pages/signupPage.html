@@ -16,28 +16,34 @@
             </div>
 
             <div class="text-input">
-                <input type="text" id="name-box" name="name" placeholder="Name">
+                <label for="name-box">Name<span style="color: red;">*</span></label>
+                <input type="text" id="name-box" name="name" placeholder="John Doe">
             </div>
 
             <div class="text-input">
-                <input type="text" id="phoneNum-box" name="phoneNumber" placeholder="Phone Number">
+                <label for="phoneNum-box">Phone Number<span style="color: red;">*</span></label>
+                <input type="text" id="phoneNum-box" name="phoneNumber" placeholder="123-456-7890">
             </div>
 
             <div class="text-input">
-                <input type="text" id="signup-email-box" name="email" placeholder="Email">
+                <label for="signup-email-box">Email<span style="color: red;">*</span></label>
+                <input type="text" id="signup-email-box" name="email" placeholder="example@email.com">
             </div>
 
             <div class="text-input">
-                <input type="text" id="signup-password-box" name="password" placeholder="Password">
+                <label for="signup-password-box">Password<span style="color: red;">*</span></label>
+                <input type="text" id="signup-password-box" name="password" placeholder="password">
             </div>
 
-            <!-- button will eventually be an onclick but wanted to link for testing -->
-            <button class="submit-button"><a href="homePage.html">Sign Up</a></button>
+            <p id="signup-alert">Fill out all required fields.</p>
+
+
+            <button class="submit-button" onclick="createAccount()">Sign Up</button>
             <p class="page-link"><a href="loginPage.html">Back to Login</a></p>
 
         </div>
 
-        <!-- <script src="../js/login.js"></script> -->
+        <script src="../js/signup.js"></script>
 
     </body>
 </html>
