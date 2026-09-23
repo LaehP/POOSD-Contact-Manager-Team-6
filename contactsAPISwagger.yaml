@@ -324,6 +324,7 @@ definitions:
     - lastName
     - login
     - password
+    - phoneNumber
     properties:
       firstName:
         type: string
@@ -338,6 +339,9 @@ definitions:
         type: string
         format: password
         example: password
+      phoneNumber:
+        type: string
+        example: (555)-555-5555
   searchInput:
     type: object
     required:
