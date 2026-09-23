@@ -1,10 +1,25 @@
 
 <?php
 
-    require_once "databaseConnection.php";
-    require_once "frontendInfo.php";
+    require_once __DIR__ . "/databaseConnection.php";
+    require_once __DIR__ . "/frontendInfo.php";
 
-    $conn = connectToDatabase();
+    // connect to the database
+    if (!class_exists("mysqli"))
+    {
+        http_response_code(500);
+        returnWithError("Server Configuration Error: PHP mysqli extension is not enabled.");
+        exit;
+    }
+
+    try {
+        $conn = connectToDatabase();
+    }
+    catch (Throwable $exception) {
+        http_response_code(500);
+        returnWithError("Database connection failed: " . $exception->getMessage());
+        exit;
+    }
 
     $inData = getRequestInfo(); 
     if ($inData === null) {
@@ -22,11 +37,11 @@
         returnWithError("User ID must be defined");
         exit;
     }
-    $contactFirstName = $inData["firstName"];
-    $contactLastName = $inData["lastName"];
-    $contactPhoneNumber = $inData["phoneNumber"];
-    $contactEmail = $inData["email"];
-    $userId = $inData["userId"];
+    $contactFirstName = trim((string)$inData["firstName"] ?? "");
+    $contactLastName = trim((string)$inData["lastName"] ?? "");
+    $contactPhoneNumber = trim((string)$inData["phoneNumber"] ?? "");
+    $contactEmail = trim((string)$inData["email"] ?? "");
+    $userId = trim((string)$inData["userId"] ?? "");
 
 
 
@@ -38,6 +53,12 @@
     }
     else {
         $userCheck = $conn->prepare("SELECT id FROM Users WHERE id = ? LIMIT 1");
+        if ($userCheck === false) {
+            http_response_code(500);
+            returnWithError($conn->error);
+            $conn->close();
+            exit;
+        }
         $userCheck->bind_param("i", $userId);
         if ($userCheck->execute()) {
             $userResult =$userCheck->get_result();
@@ -59,7 +80,7 @@
             $conn->close();
             exit;
         }
-        $contactInsertion = $conn->prepare("INSERT into CONTACTS (FirstName, LastName, Phone, Email, UserID) VALUES(?, ?, ?, ?, ?) ");
+        $contactInsertion = $conn->prepare("INSERT into Contacts (FirstName, LastName, Phone, Email, UserID) VALUES(?, ?, ?, ?, ?) ");
         $contactInsertion->bind_param("ssssi", $contactFirstName, $contactLastName, $contactPhoneNumber, $contactEmail, $userId);
         if($contactInsertion->execute()) {
             $contactId = $conn->insert_id;
