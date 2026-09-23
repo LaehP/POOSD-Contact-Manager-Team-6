@@ -339,7 +339,7 @@ body {
     background: #e8e8e8;
 }
 
-@media (min-width: 715px) and (max-width: 1190px) {
+@media (max-width: 1190px) {
     body {
         background: #acd9ee;
     }

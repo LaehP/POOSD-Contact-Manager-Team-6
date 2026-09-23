@@ -158,7 +158,7 @@ body.contact-page {
     text-decoration: none;
 }
 
-@media (min-width: 715px) and (max-width: 1190px) {
+@media (max-width: 1190px) {
     body.contact-page {
         background: #acd9ee;
     }
@@ -203,6 +203,11 @@ body.contact-page {
     }
 
     .contact-page .email-row .info-label {
+        min-width: 0;
+    }
+
+    .contact-page .email-row .info-value {
+        transform: translateX(0);
         min-width: 0;
     }
 
@@ -256,6 +261,11 @@ body.contact-page {
     }
 
     .contact-page .email-row .info-label {
+        min-width: 0;
+    }
+
+    .contact-page .email-row .info-value {
+        transform: translateX(0px);
         min-width: 0;
     }
 
