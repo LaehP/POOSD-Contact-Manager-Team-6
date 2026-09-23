@@ -1,23 +1,42 @@
 body {
     margin: 0;
     background: #acd9ee;
-    font-family: "SF Pro", "Inter", sans-serif;
+    font-family: "Caveat", cursive;
     min-height: 100vh;
     display: flex;
     justify-content: center;
 }
 
 .screen-card {
-    background: white;
+    position: relative;
+    background: #FFF8C8;
     width: 40%;
     max-width: 764px;
     min-height: 100vh;
     height: auto;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.screen-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 60px,
+        rgba(0, 0, 0, 0.10) 60px,
+        rgba(0, 0, 0, 0.10) 62px
+    );
+    pointer-events: none;
 }
 
 .header {
+    position: relative;
+    z-index: 1;
     background: #8cc7e2;
     height: 90px;
     display: flex;
@@ -31,54 +50,125 @@ body {
     border: none;
     cursor: pointer;
     text-decoration: none;
-    font-family: "SF Pro", sans-serif;
-    font-weight: 510;
-    font-size: 40px;
+    font-family: "Caveat", cursive;
+    font-weight: 600;
+    font-size: 28px;
     color: black;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
+    gap: 6px;
+    min-width: 100px;
     height: 40px;
-    transform: rotate(270deg);
     padding: 0;
+    line-height: 1;
+    margin-top: 16px;
+}
+
+.back-button::before {
+    content: "^";
+    display: inline-block;
+    font-size: 50px;
+    transform: rotate(270deg);
+    line-height: 2;
 }
 
 .form-body {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     gap: 70px;
-    padding: 35px 40px 10px;
+    padding: 100px 26px 15px 40px;
     flex: 1;
+    padding-bottom: 80px;
 }
 
 .text-field {
     display: flex;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+}
+
+.text-field:nth-of-type(1),
+.text-field:nth-of-type(3) {
+    gap: 2px;
+}
+
+.text-field:nth-of-type(2) input {
+    margin-left: 10px;
+}
+
+.text-field:nth-of-type(3) input {
+    margin-left: -72px;
+    width: 100%;
+    max-width: 320px;
+}
+
+.two-column {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    width: 100%;
+    flex: 1;
+    margin-left: -72px;
+}
+
+.inline-field {
+    display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
 }
 
 .text-field label {
-    font-family: "SF Pro", sans-serif;
-    font-size: 20px;
-    font-weight: 510;
+    font-family: "Caveat", cursive;
+    font-size: 34px;
+    font-weight: 600;
     color: black;
     font-variation-settings: "wdth" 100;
+    min-width: 170px;
+    text-align: right;
+    flex-shrink: 0;
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.required-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.required-star {
+    color: #d62828;
+    font-size: 30px;
+    line-height: 1;
+    margin-top: -6px;
 }
 
 .text-field input {
-    background: #D9D9D9;
-    border: none;
-    height: 50px;
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    height: 56px;
     padding: 0 12px;
-    font-family: "Inter", sans-serif;
-    font-weight: 400;
-    font-size: 22px;
+    font-family: "Caveat", cursive;
+    font-weight: 500;
+    font-size: 34px;
+    line-height: 1.2;
     color: black;
     outline: none;
-    width: 60%;
+    width: 50%;
     box-sizing: border-box;
     border-radius: 4px;
+    margin-left: 0;
+    max-width: 320px;
+}
+
+.inline-field input {
+    width: 100%;
 }
 
 .text-field input::placeholder {
@@ -86,50 +176,81 @@ body {
 }
 
 .date-label {
-    font-family: "SF Pro", sans-serif;
-    font-size: 20px;
-    font-weight: 510;
+    font-family: "Caveat", cursive;
+    font-size: 34px;
+    font-weight: 600;
     color: black;
     font-variation-settings: "wdth" 100;
     margin-top: 5px;
+    display: inline-block;
 }
 
 .date-value {
-    font-family: "Inter", sans-serif;
+    font-family: "Caveat", cursive;
     font-weight: 500;
-    font-size: 15px;
-    color: #5A7F90;
+    font-size: 34px;
+    color: black;
     margin-top: 7px;
-    margin-left: 5px;
+    margin-left: 10px;
+    display: inline-block;
+}
+
+.validation-message {
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    width: 100%;
+    min-height: 30px;
+    margin: 0;
+    overflow: hidden;
+    text-align: center;
+    font-family: "Caveat", cursive;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: #d62828;
+}
+
+.validation-message.visible {
+    visibility: visible;
+    opacity: 1;
 }
 
 .save-container {
-    display:flex;
-    justify-content: center;
-    padding-top: 16px;
+    display: grid;
+    grid-template-rows: 30px auto;
+    justify-items: center;
+    align-items: start;
+    padding-top: 27px;
+}
+
+.text-field input.input-invalid {
+    border: 2px solid #d62828;
+    box-shadow: 0 0 0 1px rgba(214, 40, 40, 0.12);
 }
 
 .save-button {
     background: #8CC7E2;
     border: 2px solid #b9d9e8;
-    border-radius: 15px;
-    height: 70px;
-    width: 250px;
-    font-family: "Inter", sans-serif;
+    border-radius: 25px;
+    height: 60px;
+    width: 200px;
+    font-family: "Caveat", cursive;
     font-weight: 500;
-    font-size: 30px;
+    font-size: 40px;
     color: #fff;
     cursor: pointer;
     transition: opacity 0.15s;
 }
 
+
 .save-button:hover {
-    border: 2px solid #b9d9e8;
-    opacity: 0.90;
+    background-color: #546AC0;
 }
 
 .save-button:active {
-    opacity: 0.7;
+    text-decoration: none;
+    color: #FFFFFF;
 }
 
 .trash-button {
@@ -154,11 +275,267 @@ body {
     justify-content: space-between;
 }
 
-.contact-name {
-    font-family: "SF Pro", sans-serif;
-    font-size: 40px;
-    font-weight: 300;
+.delete-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(120, 150, 170, 0.38);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+}
+
+.delete-modal.hidden {
+    display: none;
+}
+
+.delete-modal-card {
+    background: #f8f1c8;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 18px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+    width: min(420px, 80vw);
+    padding: 28px 24px 20px;
+    font-family: "Caveat", cursive;
+    text-align: center;
+}
+
+.delete-modal-card p {
+    margin: 0 0 20px;
+    font-size: 32px;
+    line-height: 1.2;
     color: #000;
-    margin-top: 30px;
+}
+
+.delete-modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.modal-button {
+    border: 2px solid #b9d9e8;
+    border-radius: 12px;
+    background: #8CC7E2;
+    color: #fff;
+    font-family: "Caveat", cursive;
+    font-size: 28px;
+    font-weight: 600;
+    padding: 8px 28px;
+    cursor: pointer;
+}
+
+.modal-button:hover {
+    background: #546AC0;
+}
+
+.cancel-button {
+    background: #f2f2f2;
+    color: #1f1f1f;
+    border-color: rgba(0, 0, 0, 0.15);
+}
+
+.cancel-button:hover {
+    background: #e8e8e8;
+}
+
+@media (max-width: 1190px) {
+    body {
+        background: #acd9ee;
+    }
+
+    .screen-card {
+        width: 70%;
+        max-width: 100%;
+        min-height: 100vh;
+        box-shadow: none;
+    }
+
+    .header {
+        background: #8cc7e2;
+        height: 80px;
+        padding: 18px 20px 0;
+        box-shadow: none;
+    }
+
+    .back-button {
+        margin-top: -1px;
+        font-size: 24px;
+    }
+
+    .form-body {
+        gap: 76px;
+        padding: 110px 18px 40px 18px;
+    }
+
+    .text-field {
+        gap: 12px;
+    }
+
+    .text-field label {
+        min-width: 0;
+        text-align: left;
+        font-size: 28px;
+    }
+
+    .text-field:nth-of-type(1) .two-column {
+        margin-left: 0;
+        transform: translateX(9px);
+    }
+
+    .text-field:nth-of-type(2) input {
+        margin-left: 0;
+        width: 50%;
+        max-width: none;
+    }
+
+    .text-field:nth-of-type(3) input {
+        margin-left: 0;
+        width: 50%;
+        max-width: none;
+        transform: translateX(9px);
+    }
+
+    .text-field input {
+        width: 100%;
+        max-width: none;
+        height: 48px;
+        font-size: 24px;
+    }
+
+    .date-label,
+    .date-value {
+        font-size: 28px;
+    }
+
+    .validation-message {
+        font-size: 24px;
+        margin-bottom: 6px;
+        transform: translateY(-8px);
+    }
+
+    .save-container {
+        grid-template-rows: auto auto;
+        row-gap: 6px;
+        padding-top: 6px;
+    }
+
+    .save-button {
+        font-size: 34px;
+        height: 54px;
+        width: 180px;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 714px) {
+    body {
+        background: #FFF8C8;
+    }
+
+    .screen-card {
+        width: 100%;
+        max-width: 100%;
+        min-height: 100vh;
+        box-shadow: none;
+    }
+
+    .header {
+        background: #8cc7e2;
+        height: 80px;
+        padding: 18px 20px 0;
+        box-shadow: none;
+    }
+
+    .back-button {
+        margin-top: -1px;
+        font-size: 24px;
+    }
+
+    .form-body {
+        gap: 80px;
+        padding: 100px 18px 40px 18px;
+    }
+
+    .text-field {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .text-field:nth-of-type(1) .two-column {
+        margin-left: 0;
+        transform: translateX(5px);
+    }
+
+    .text-field label {
+        min-width: 0;
+        text-align: left;
+        font-size: 24px;
+    }
+
+    
+    .text-field:nth-of-type(2) input {
+        margin-left: 0;
+        width: 50%;
+        max-width: none;
+    }
+
+    .text-field:nth-of-type(3) {
+        gap: 10px;
+    }
+
+    .text-field:nth-of-type(3) input {
+        margin-left: 0;
+        width: 50%;
+        max-width: none;
+    }
+
+    .text-field input {
+        width: 100%;
+        max-width: none;
+        height: 48px;
+        font-size: 24px;
+    }
+
+    .date-label,
+    .date-value {
+        font-size: 24px;
+    }
+
+    .validation-message {
+        font-size: 24px;
+        margin-bottom: 6px;
+        transform: translateY(-8px);
+    }
+
+    .save-container {
+        grid-template-rows: auto auto;
+        row-gap: 6px;
+        padding-top: 6px;
+    }
+
+    .save-button {
+        font-size: 34px;
+        height: 54px;
+        width: 180px;
+        transform: translateY(-14px);
+    }
+
+    .delete-modal-card p {
+        font-size: 26px;
+    }
+
+    .modal-button {
+        font-size: 24px;
+    }
+
+    .two-column {
+        margin-left: 0;
+    }
+
+    .save-container {
+        padding-top: 20px;
+    }
 }
 
