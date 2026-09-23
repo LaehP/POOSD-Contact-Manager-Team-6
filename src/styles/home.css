@@ -1,17 +1,15 @@
 body { 
-    margin: 0;
-    background: #acd9ee;
+    background-color: #acd9ee;
     font-family: "Caveat", cursive;
-    
+    margin: 0;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
 }
 
 .container {
     background: #FFFFFF;
     min-height: 100vh;
-    width: 35vw;
+    width: calc(35vw + 100px);
     
     display: flex;
     flex-direction: column;
