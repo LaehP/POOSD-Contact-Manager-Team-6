@@ -35,6 +35,7 @@ paths:
       - in: body
         name: contactInformatiom
         description: the information required to add a contact, including userId
+        required: true
         schema: 
           $ref: '#/definitions/addContactInfo'
       responses:
