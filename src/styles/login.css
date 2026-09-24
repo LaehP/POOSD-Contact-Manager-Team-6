@@ -1,3 +1,4 @@
+/* Responsive styling for mobile devices like phones */
 @media (max-width: 714px){
     body {
         background-color: #FFFFFF;
@@ -23,7 +24,6 @@
         width: 180px;
     }
 
-
 }
 
 body {
@@ -32,9 +32,9 @@ body {
     margin: 0;
     display: flex;
     justify-content: center;
-
 }
 
+/* Main page container */
 .white-container {
     margin: 0;
     display: flex;
@@ -52,6 +52,7 @@ body {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
+/* User input boxes */
 .text-input {
     width: 70%;
 }
@@ -73,7 +74,6 @@ body {
     background-color: #D9D9D9;
     font-family: "Caveat", cursive;
     font-size: 24px;
-
 }
 
 .submit-button {
@@ -97,6 +97,7 @@ body {
     font-size: 70px;
 }
 
+/* Hover functionality and link styling */
 .page-link {
     margin-bottom: 30px;
 }
@@ -114,6 +115,7 @@ body {
     background-color: #546AC0;
 }
 
+/* Error messages, stay hidden until user leaves box blank */
 #incorrect-login-alert {
     display: none; 
     position: absolute;
@@ -123,7 +125,6 @@ body {
     margin: 0;
 
     top: calc(50% + 150px);
-    
 }
 
 #signup-alert {

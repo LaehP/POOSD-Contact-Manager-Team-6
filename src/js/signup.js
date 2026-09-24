@@ -1,6 +1,8 @@
 async function createAccount() {
+    //pulls required data from input boxes on signup page
     const fullName = document.getElementById("name-box").value.trim();
 
+    //parses name box into first and last name to match the database setup
     const nameParts = fullName.split(" ");
     const firstName = nameParts[0];
     const lastName = nameParts.slice(1).join(" ");
@@ -9,6 +11,7 @@ async function createAccount() {
     const email = document.getElementById("signup-email-box").value.trim();
     const password = document.getElementById("signup-password-box").value;
 
+    //POST request sends required user data to database, if successful, creates user's account and redirects them to the login page
     const response = await fetch("http://cop4431-jonathonf.online/backend/api/createAccount.php", {
         method: "POST",
         headers: {
@@ -23,8 +26,9 @@ async function createAccount() {
         })
     });
 
-    const data = await response.json();
+    const data = await response.json(); //waiting for process to complete
 
+    //determines which alert user receives depending on the action taken
     const alert = document.getElementById("signup-alert");
     if(data.error === ""){
         alert.style.display = "block";
@@ -50,8 +54,6 @@ async function createAccount() {
             }
         });
 
-
     }
-
 
 }
