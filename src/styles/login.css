@@ -14,7 +14,6 @@
     .text-input input {
         width: 180px;
         height: 60px;
-        transform: translateX(-50px);
         font-size: 20px;
     }
 
@@ -88,7 +87,7 @@ body {
 
     background-color: #8CC7E2;
     font-family: "Caveat", cursive;
-    font-size: 35px;
+    font-size: 26px;
     color: #FFFFFF;
 }
 
