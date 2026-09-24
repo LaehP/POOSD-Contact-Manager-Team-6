@@ -4,13 +4,14 @@ body {
     margin: 0;
     display: flex;
     justify-content: center;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .container {
     background: #FFFFFF;
-    min-height: 100vh;
+    height: 100vh;
     width: calc(35vw + 100px);
-    
     display: flex;
     flex-direction: column;
 }
@@ -132,6 +133,7 @@ body {
     background: #fdf5c8;
     flex: 1;
     overflow-y: auto;
+    min-height: 0;
     border-top: 1px solid #ebdca3;
 }
 
