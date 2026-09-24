@@ -27,7 +27,14 @@ async function createAccount() {
 
     const alert = document.getElementById("signup-alert");
     if(data.error === ""){
-        window.location.href = "loginPage.html";
+        alert.style.display = "block";
+        alert.textContent = "Account created! Redirecting to login screen."
+        alert.style.color = "lightgreen";
+
+        setTimeout(function() {
+            window.location.href = "loginPage.html";
+        }, 3000);
+
     }
     else{
         alert.style.display = "block";
