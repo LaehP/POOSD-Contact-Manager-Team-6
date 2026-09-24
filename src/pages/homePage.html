@@ -13,16 +13,16 @@
                 <header class="top-bar">
                     <div class="search-wrapper">
                         <img src="../assets/search.png" alt="Search" class="search-icon" width="30" height="30">
-                        <input type="search" class="search-box" placeholder="Search">
+                        <input type="search" id="searchInput" class="search-box" placeholder="Search">
                     </div>
-                    <a href="editPage.html" class="add-btn" aria-label="Add contact">+</a>
+                    <a href="editPage.html" id="addContactBtn" class="add-btn" aria-label="Add contact">+</a>
                 </header>
 
                 <!--User Profile Banner-->
                 <div class="profile-banner">
                 <div class="profile-info">
                     <span class="star-icon">★</span>
-                    <span class="user-name">Your Name</span>
+                    <span id="userNameDisplay" class="user-name">Your Name</span>
                 </div>
                 <a href="contactPage.html" class="arrow-btn" aria-label="View profile">&gt;</a>
                 </div>
@@ -33,21 +33,7 @@
                 </div>
 
                 <!--Scrollable Contact List-->
-                <div class="contacts-list">
-                <div class="contact-item">
-                    <span class="contact-name">First, Last</span>
-                    <a href="contactPage.html" class="arrow-btn" aria-label="View contact">&gt;</a>
-                </div>
-                <div class="contact-item"></div>
-                <div class="contact-item"></div>
-                <div class="contact-item"></div>
-                <div class="contact-item"></div>
-                <div class="contact-item"></div>
-                <div class="contact-item"></div>
-                <div class="contact-item"></div>
-                <div class="contact-item"></div>
-                <div class="contact-item"></div>
-                </div>
+                <div id="contactList" class="contacts-list"></div>
             </div>
     <script src="../js/home.js"></script>
     </body>
