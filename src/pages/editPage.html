@@ -11,8 +11,8 @@
 <body>
   <div class="screen-card">
     <div class="header">
-      <a class="back-button" href="contactPage.html" aria-label="Back to contact">Back</a>
-      <button class="trash-button" id="deleteButton" type="button" aria-label="Delete contact">
+      <a class="back-button" id="backButton" href="homePage.html" aria-label="Back">Back</a>
+      <button class="trash-button hidden" id="deleteButton" type="button" aria-label="Delete contact">
         <img src="../assets/Trash 2.png" alt="Delete" width="30" height="30">
       </button>
     </div>
@@ -32,27 +32,27 @@
         <label class="required-label" for="firstNameInput">Name:<span class="required-star">*</span></label>
         <div class="two-column">
           <div class="inline-field">
-            <input type="text" id="firstNameInput" placeholder="John">
+            <input type="text" id="firstNameInput" value="" placeholder="John">
           </div>
           <div class="inline-field">
-            <input type="text" id="lastNameInput" placeholder="Doe">
+            <input type="text" id="lastNameInput" value="" placeholder="Doe">
           </div>
         </div>
       </div>
 
       <div class="text-field">
         <label class="required-label" for="numberInput">Phone Number:<span class="required-star">*</span></label>
-        <input type="text" id="numberInput" placeholder="(555) 123-4567">
+        <input type="text" id="numberInput" value="" placeholder="(555) 123-4567">
       </div>
 
       <div class="text-field">
         <label class="required-label" for="emailInput">Email:<span class="required-star">*</span></label>
-        <input type="text" id="emailInput" placeholder="example@email.com">
+        <input type="text" id="emailInput" value="" placeholder="example@email.com">
       </div>
 
       <div>
         <div class="date-label">Date Created:</div>
-        <div class="date-value" id="dateCreated">09/04/2026</div>
+        <div class="date-value" id="dateCreated">Loading...</div>
       </div>
 
       <div class="save-container">

@@ -1,3 +1,31 @@
+@media (max-width: 714px){
+    body {
+        background-color: #FFFFFF;
+    }
+
+    .white-container{
+        width: 100%;
+        max-width: 100%;
+        min-height: 100vh;
+        box-shadow: none;
+    }
+
+    .text-input input {
+        width: 180px;
+        height: 60px;
+        transform: translateX(-50px);
+        font-size: 20px;
+    }
+
+    .submit-button {
+        font-size: 34px;
+        height: 60px;
+        width: 180px;
+    }
+
+
+}
+
 body {
     background-color: #acd9ee;
     font-family: "Caveat", cursive;

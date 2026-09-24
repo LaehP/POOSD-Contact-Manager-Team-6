@@ -127,6 +127,10 @@ body.contact-page {
     color: #000;
 }
 
+.contact-page .email-row .info-value {
+    transform: translateX(-20px);
+}
+
 .contact-page .date-block {
     margin-bottom: 80px;
     align-items: baseline;
@@ -153,3 +157,120 @@ body.contact-page {
 .contact-page a.edit-button {
     text-decoration: none;
 }
+
+@media (max-width: 1190px) {
+    body.contact-page {
+        background: #acd9ee;
+    }
+
+    .contact-page .screen-card {
+        width: 50%;
+        max-width: 100%;
+        min-height: 100vh;
+        box-shadow: none;
+    }
+
+    .contact-page .header {
+        background: #8cc7e2;
+        height: 80px;
+        padding: 18px 20px 0;
+        box-shadow: none;
+    }
+
+    .contact-page .back-button {
+        margin-top: -1px;
+        font-size: 24px;
+    }
+
+    .contact-page .form-body {
+        gap: 90px;
+        padding: 85px 18px 40px 18px;
+    }
+
+    .contact-page .contact-name {
+        font-size: 42px;
+        margin-top: 10px;
+    }
+
+    .contact-page .info-row {
+        font-size: 28px;
+        gap: 4px;
+        line-height: 1.3;
+    }
+
+    .contact-page .info-label {
+        min-width: 0;
+    }
+
+    .contact-page .email-row .info-label {
+        min-width: 0;
+    }
+
+    .contact-page .email-row .info-value {
+        transform: translateX(0);
+        min-width: 0;
+    }
+
+    .contact-page .date-block {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 714px) {
+    body.contact-page {
+        background: #FFF8C8;
+    }
+
+    .contact-page .screen-card {
+        width: 100%;
+        max-width: 100%;
+        min-height: 100vh;
+        box-shadow: none;
+    }
+
+    .contact-page .header {
+        background: #8cc7e2;
+        height: 80px;
+        padding: 18px 20px 0;
+        box-shadow: none;
+    }
+
+    .contact-page .back-button {
+        margin-top: -1px;
+        font-size: 24px;
+    }
+
+    .contact-page .form-body {
+        gap: 90px;
+        padding: 85px 18px 40px 18px;
+    }
+
+    .contact-page .contact-name {
+        font-size: 42px;
+        margin-top: 10px;
+    }
+
+    .contact-page .info-row {
+        font-size: 28px;
+        gap: 4px;
+        line-height: 1.3;
+    }
+
+    .contact-page .info-label {
+        min-width: 0;
+    }
+
+    .contact-page .email-row .info-label {
+        min-width: 0;
+    }
+
+    .contact-page .email-row .info-value {
+        transform: translateX(0px);
+        min-width: 0;
+    }
+
+    .contact-page .date-block {
+        margin-bottom: 20px;
+    }
+}
+
