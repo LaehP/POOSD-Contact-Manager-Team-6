@@ -57,6 +57,7 @@ CREATE TABLE `Users` (
   `LastName` varchar(50) NOT NULL DEFAULT '',
   `Login` varchar(50) NOT NULL DEFAULT '',
   `Password` varchar(50) NOT NULL DEFAULT '',
+  `PhoneNumber` varchar(50) NOT NULL DEFAULT '',
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -67,7 +68,7 @@ CREATE TABLE `Users` (
 
 LOCK TABLES `Users` WRITE;
 /*!40000 ALTER TABLE `Users` DISABLE KEYS */;
-INSERT INTO `Users` VALUES (1,'Sam','Hill','SamH','Test'),(2,'Sindhu','Sesham','Sindhu','12345');
+INSERT INTO `Users` VALUES (1,'Sam','Hill','SamH','Test','407-555-0100'),(2,'Sindhu','Sesham','Sindhu','12345','321-555-0200');
 /*!40000 ALTER TABLE `Users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
