@@ -80,7 +80,7 @@ paths:
       tags:
       - users
       summary: Returns the first and last name and id number for a given userId
-      description: "Pass the userId as a parameter on the url, and receive a JSON with the first name, last name, and id number for every contact associated with that userId."
+      description: "Pass the userId and ID as parameters on the url, and receive a JSON with the first name, last name, email and phone number for every contact associated with that userId."
       operationId: viewContact
       produces:
       - application/JSON
@@ -100,6 +100,37 @@ paths:
           description: Contact is pulled success
           schema:
             $ref: "#/definitions/viewContact"
+        "400":
+          description: bad input parameter
+        "404":
+          description: contact not found
+        "500":
+          description: server errors encountered such as issues connecting to and making requests from the database
+  /userContact.php:
+    get:
+      tags:
+      - users
+      summary: Returns the first and last name and id number for a given userId
+      description: "Pass the userId as a parameter on the url, and receive a JSON with the first name, last name, phone number, and email for the user."
+      operationId: userContact
+      produces:
+      - application/JSON
+      parameters:
+      - name: userId
+        in: query
+        description: The unique identifier tied to the user.
+        required: true
+        type: integer
+      - name: id
+        in: query
+        description: The unique identifier tied to the contact.
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Contact is pulled success
+          schema:
+            $ref: "#/definitions/userContact"
         "400":
           description: bad input parameter
         "404":
@@ -131,6 +162,100 @@ paths:
           description: URL not found
         "500":
           description: Server Error
+  /createAccount.php:
+    post:
+      tags:
+      - users
+      summary: Create a user account
+      description: Creates a new user account when the login is not already in use.
+      operationId: createAccount
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: account
+        required: true
+        schema:
+          $ref: "#/definitions/createAccountInput"
+      responses:
+        "200":
+          description: Account created
+          schema:
+            $ref: "#/definitions/accountResponse"
+        "400":
+          description: Required field is missing or empty
+          schema:
+            $ref: "#/definitions/accountResponse"
+        "500":
+          description: "Server configuration, database, or request error"
+          schema:
+            $ref: "#/definitions/accountResponse"
+  /deleteContact.php:
+    post:
+      tags:
+      - users
+      summary: Delete a contact
+      description: Deletes a contact only when it belongs to the supplied user ID.
+      operationId: deleteContact
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: contact
+        required: true
+        schema:
+          $ref: "#/definitions/contactIdentifier"
+      responses:
+        "200":
+          description: Contact deleted; the error property is an empty string
+          schema:
+            $ref: "#/definitions/errorResponse"
+        "400":
+          description: User ID or contact ID is missing
+          schema:
+            $ref: "#/definitions/errorResponse"
+        "404":
+          description: Contact was not found for the supplied user and contact IDs
+          schema:
+            $ref: "#/definitions/errorResponse"
+        "500":
+          description: Server or database error
+          schema:
+            $ref: "#/definitions/errorResponse"
+  /searchContact.php:
+    post:
+      tags:
+      - users
+      summary: Search a user's contacts
+      description: "Searches by a general term, first name, or last name. A user ID and at least one search field are required."
+      operationId: searchContact
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: search
+        required: true
+        schema:
+          $ref: "#/definitions/searchInput"
+      responses:
+        "200":
+          description: Matching contacts
+          schema:
+            $ref: "#/definitions/searchResponse"
+        "400":
+          description: User ID or search criteria is missing
+          schema:
+            $ref: "#/definitions/errorResponse"
+        "500":
+          description: Server configuration or database error
+          schema:
+            $ref: "#/definitions/errorResponse"
 definitions:
   addContactInfo:
     type: object
@@ -221,3 +346,148 @@ definitions:
       id:
         type: integer
         example: 1
+  userContact:
+    type: object
+    required:
+    - FirstName
+    - LastName
+    - Login
+    - PhoneNumber
+    properties:
+      FirstName:
+        type: string
+        example: John
+      LastName:
+        type: string
+        example: Doe
+      PhoneNumber:
+        type: string
+        example: (555)-555-5555
+      Login:
+        type: string
+        example: name@gmail.com
+  createAccountInput:
+    type: object
+    required:
+    - firstName
+    - lastName
+    - login
+    - password
+    properties:
+      firstName:
+        type: string
+        example: John
+      lastName:
+        type: string
+        example: Doe
+      login:
+        type: string
+        example: JohnD
+      password:
+        type: string
+        format: password
+        example: password
+  searchInput:
+    type: object
+    required:
+    - userId
+    properties:
+      search:
+        type: string
+        example: John
+      firstName:
+        type: string
+        example: John
+      lastName:
+        type: string
+        example: Doe
+      userId:
+        type: integer
+        example: 1
+    description: "At least one of search, firstName, or lastName must also be supplied."
+  messageResponse:
+    type: object
+    properties:
+      message:
+        type: string
+        example: Contact updated successfully
+      error:
+        type: string
+        example: ""
+  errorResponse:
+    type: object
+    required:
+    - error
+    properties:
+      error:
+        type: string
+        example: Contact not found.
+  searchResponse:
+    type: object
+    required:
+    - error
+    - results
+    properties:
+      results:
+        type: array
+        items:
+          $ref: "#/definitions/searchResult"
+      error:
+        type: string
+        example: ""
+  searchResult:
+    type: object
+    required:
+    - firstName
+    - id
+    - lastName
+    - phoneNumber
+    properties:
+      id:
+        type: integer
+        example: 1
+      firstName:
+        type: string
+        example: John
+      lastName:
+        type: string
+        example: Doe
+      phoneNumber:
+        type: string
+        example: (555)-555-5555
+  contactIdentifier:
+    type: object
+    required:
+    - id
+    - userId
+    properties:
+      userId:
+        type: integer
+        example: 1
+      id:
+        type: integer
+        example: 1
+  accountResponse:
+    type: object
+    required:
+    - ID
+    - error
+    - firstName
+    - lastName
+    - login
+    properties:
+      ID:
+        type: integer
+        example: 1
+      firstName:
+        type: string
+        example: John
+      lastName:
+        type: string
+        example: Doe
+      login:
+        type: string
+        example: JohnD
+      error:
+        type: string
+        example: ""
