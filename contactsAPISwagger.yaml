@@ -35,6 +35,7 @@ paths:
       - in: body
         name: contactInformatiom
         description: the information required to add a contact, including userId
+        required: true
         schema: 
           $ref: '#/definitions/addContactInfo'
       responses:
@@ -323,6 +324,7 @@ definitions:
     - lastName
     - login
     - password
+    - phoneNumber
     properties:
       firstName:
         type: string
@@ -337,6 +339,9 @@ definitions:
         type: string
         format: password
         example: password
+      phoneNumber:
+        type: string
+        example: (555)-555-5555
   searchInput:
     type: object
     required:
@@ -426,6 +431,7 @@ definitions:
     - firstName
     - lastName
     - login
+    - phoneNumber
     - error
     properties:
       ID:
@@ -440,6 +446,9 @@ definitions:
       login:
         type: string
         example: JohnD
+      phoneNumber:
+        type: string
+        example: (555)-555-5555
       error:
         type: string
         example: ""
