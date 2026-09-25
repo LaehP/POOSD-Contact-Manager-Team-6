@@ -138,3 +138,16 @@ body {
     padding: 0 4px;
     user-select: none;
 }
+
+@media (max-width: 714px) {
+    body{
+        background: #FFF8C8;
+    }
+
+    .container{
+        width: 100%;
+        max-width: 100%;
+        min-height: 100vh;
+        box-shadow: none;
+    }
+}

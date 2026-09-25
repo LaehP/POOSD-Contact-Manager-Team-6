@@ -100,52 +100,48 @@ function setupProfileBanner() {
   }
 }
 
-function updateProfileArrowTarget() {
+async function updateProfileArrowTarget() {
   const userId = getUserId();
   const profileArrow = document.querySelector('.profile-banner .arrow-btn');
   const userNameEl = document.getElementById('userNameDisplay');
+
   if (!profileArrow || !userId) return;
 
-  const { firstName, lastName } = getStoredUserData();
+  try {
+    const response = await fetch(`${apiBase}/userContact.php?userId=${userId}`);
+    const data = await response.json();
 
-  let targetContact = null;
+    if (!response.ok || data.error) {
+      throw new Error(data.error || 'Unable to load user contact.');
+    }
 
-  // 1. Try matching by name if available
-  if (firstName || lastName) {
-    targetContact = allContacts.find((c) => {
-      const firstMatch = firstName && c.firstName.toLowerCase() === firstName.toLowerCase();
-      const lastMatch = lastName && c.lastName.toLowerCase() === lastName.toLowerCase();
-      return (firstName && lastName) ? (firstMatch && lastMatch) : (firstMatch || lastMatch);
-    });
-  }
+    const rawContact = Array.isArray(data)
+      ? data[0]
+      : data.contact || data.result || data.results?.[0] || data;
 
-  // Do not fall back to an arbitrary contact. If there is no exact self-match,
-  // keep the arrow functional but leave the detail page to show its generic profile state.
-  if (!targetContact) {
+    const contact = normalizeContact(rawContact);
+
+    const displayName = `${contact.firstName} ${contact.lastName}`.trim();
+    if (userNameEl && displayName) {
+      userNameEl.textContent = displayName;
+    }
+
+    if (contact.id) {
+      profileArrow.href =
+        `contactPage.html?userId=${userId}&id=${contact.id}&contactId=${contact.id}`;
+
+      profileArrow.onclick = () => {
+        localStorage.setItem('selectedContactId', String(contact.id));
+        localStorage.setItem('contactId', String(contact.id));
+      };
+    }
+  } catch (error) {
+    if (userNameEl) {
+      userNameEl.textContent = 'Your Name';
+    }
+
     profileArrow.href = `contactPage.html?userId=${userId}`;
-    profileArrow.setAttribute('aria-disabled', 'false');
-    profileArrow.onclick = () => {
-      localStorage.setItem('selectedContactId', String(targetContact.id));
-      localStorage.setItem('contactId', String(targetContact.id));
-    };
-    return;
   }
-
-  // If a contact record was matched and the banner is still showing placeholder, update it
-  if (userNameEl && (userNameEl.textContent === 'Your Name' || !userNameEl.textContent.trim())) {
-    userNameEl.textContent = `${targetContact.firstName} ${targetContact.lastName}`.trim();
-  }
-
-  // Provide both ?id= and ?contactId= so contactPage.html picks it up regardless of parameter name
-  profileArrow.href = `contactPage.html?userId=${userId}&id=${targetContact.id}&contactId=${targetContact.id}`;
-  profileArrow.setAttribute('aria-disabled', 'false');
-
-  // Store in all standard localStorage keys contactPage.js may read
-  profileArrow.onclick = () => {
-    localStorage.setItem('selectedContactId', String(targetContact.id));
-    localStorage.setItem('contactId', String(targetContact.id));
-    localStorage.setItem('id', String(targetContact.id));
-  };
 }
 
 function renderContacts(contacts) {
