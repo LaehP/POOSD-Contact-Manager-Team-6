@@ -106,7 +106,7 @@
             exit;
         }
 
-        $stmt->bind_param("ssss", $firstName, $lastName, $login, $password, $phoneNumber); 
+        $stmt->bind_param("sssss", $firstName, $lastName, $login, $password, $phoneNumber); 
         if ($stmt->execute())
         {
             returnWithInfo($firstName, $lastName, $login, $phoneNumber, $conn->insert_id);

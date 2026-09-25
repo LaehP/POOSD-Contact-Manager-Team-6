@@ -1,7 +1,7 @@
 <?php
 
-    require_once "databaseConnection.php";
-    require_once "frontendInfo.php";
+    require_once __DIR__ . "/databaseConnection.php";
+    require_once __DIR__ . "/frontendInfo.php";
 
 
     $inData = getRequestInfo();
@@ -11,7 +11,7 @@
         returnWithError("JSON decode failed");
         exit;
     }
-    if (!array_key_exists("firstName", $inData) && !array_key_exists("lastName", $inData) && !array_key_exists("phoneNumber", $inData) && !array_key_exists("email", $inData)) {
+    if (!array_key_exists("firstName", $inData) || !array_key_exists("lastName", $inData) || !array_key_exists("phoneNumber", $inData) || !array_key_exists("email", $inData)) {
         http_response_code(400);
         returnWithError("Minimum contact information not defined. Must include first name, last name, phone number, and email.");
         exit;
@@ -26,14 +26,30 @@
         returnWithError("Contact ID must be defined");
         exit;
     }
-    $contactId = $inData["id"];
-    $userId = $inData["userId"];
-    $contactFirstName = $inData["firstName"];
-    $contactLastName = $inData["lastName"];
-    $contactEmail = $inData["email"];
-    $contactPhoneNumber = $inData["phoneNumber"];
+    $contactId = trim((string)$inData["id"] ?? "");
+    $userId = trim((string)$inData["userId"] ?? "");
+    $contactFirstName = trim((string)$inData["firstName"] ?? "");
+    $contactLastName = trim((string)$inData["lastName"] ?? "");
+    $contactEmail = trim((string)$inData["email"] ?? "");
+    $contactPhoneNumber = trim((string)$inData["phoneNumber"] ?? "");
 
-    $conn = connectToDatabase();
+
+     // connect to the database
+    if (!class_exists("mysqli"))
+    {
+        http_response_code(500);
+        returnWithError("Server Configuration Error: PHP mysqli extension is not enabled.");
+        exit;
+    }
+
+    try {
+        $conn = connectToDatabase();
+    }
+    catch (Throwable $exception) {
+        http_response_code(500);
+        returnWithError("Database connection failed: " . $exception->getMessage());
+        exit;
+    }
 
     if ($conn->connect_error) 
     {
@@ -44,6 +60,12 @@
     }
     else {
         $contactUpdate = $conn->prepare("UPDATE Contacts SET FirstName = ?, LastName = ?, Phone = ?, Email = ? WHERE UserID = ? AND ID = ?");
+        if ($contactUpdate === false) {
+            http_response_code(500);
+            returnWithError($conn->error);
+            $conn->close();
+            exit;
+        }
         $contactUpdate->bind_param("ssssii", $contactFirstName, $contactLastName, $contactPhoneNumber, $contactEmail, $userId, $contactId);
         if ($contactUpdate->execute()) {
             $updatedRows = $contactUpdate->affected_rows;

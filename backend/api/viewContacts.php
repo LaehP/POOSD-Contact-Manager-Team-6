@@ -1,14 +1,33 @@
 <?php 
-    require_once "databaseConnection.php";
-    require_once "frontendInfo.php";
 
-    $conn = connectToDatabase();
+    require_once __DIR__ . "/databaseConnection.php";
+    require_once __DIR__ . "/frontendInfo.php";
+
+     // connect to the database
+    if (!class_exists("mysqli"))
+    {
+        http_response_code(500);
+        returnWithError("Server Configuration Error: PHP mysqli extension is not enabled.");
+        exit;
+    }
+
+
+    try {
+        $conn = connectToDatabase();
+    }
+    catch (Throwable $exception) {
+        http_response_code(500);
+        returnWithError("Database connection failed: " . $exception->getMessage());
+        exit;
+    }
+
     if (empty($_GET['userId'])) {
         http_response_code(400);
         returnWithError("User ID must be defined");
         exit;
     }
     $userId = $_GET['userId'];
+
     if ($conn->connect_error) 
     {
         http_response_code(500);
@@ -16,8 +35,16 @@
         exit;
     }
     else {
-        $pullContacts = $conn->prepare("SELECT FirstName, LastName, ID FROM CONTACTS WHERE UserID = ?");
-        $pullContacts->bind_param("i", $userId);
+        $pullContacts = $conn->prepare("SELECT FirstName, LastName, ID FROM Contacts WHERE UserID = ?");
+        if ($pullContacts === false) {
+            http_response_code(500);
+            returnWithError($conn->error);
+            $conn->close();
+            exit;
+        }
+
+        $pullContacts->bind_param("i", $userId); 
+
         if (!($pullContacts->execute())) {
             http_response_code(500);
             returnWithError("Error encountered when pulling contacts.");
