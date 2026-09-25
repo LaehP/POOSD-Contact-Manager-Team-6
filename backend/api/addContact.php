@@ -43,7 +43,11 @@
     $contactEmail = trim((string)$inData["email"] ?? "");
     $userId = trim((string)$inData["userId"] ?? "");
 
-
+    if ($userId === "" || $contactEmail === "" || $contactFirstName === "" || $contactLastName === "" || $contactPhoneNumber === "") {
+        http_response_code(400);
+        returnWithError("Required information must not be blank.");
+        exit;
+    }
 
     if ($conn->connect_error) 
     {
