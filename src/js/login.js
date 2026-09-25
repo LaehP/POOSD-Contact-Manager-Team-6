@@ -22,7 +22,7 @@ async function loginValidation (){
 
     //if verification successful, logs user in. If not, displays error message
     if(data.error === ""){
-        window.location.href = "homePage.html";
+        window.location.href = `homePage.html?ID=${data.ID}`;
     }
     else{
         //data error
