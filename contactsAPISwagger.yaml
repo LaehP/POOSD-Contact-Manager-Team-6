@@ -431,6 +431,7 @@ definitions:
     - firstName
     - lastName
     - login
+    - phoneNumber
     - error
     properties:
       ID:
@@ -445,6 +446,9 @@ definitions:
       login:
         type: string
         example: JohnD
+      phoneNumber:
+        type: string
+        example: (555)-555-5555
       error:
         type: string
         example: ""
