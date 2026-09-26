@@ -1,0 +1,459 @@
+swagger: '2.0'
+info:
+  description: This is the API documentation for Team 6's Small Project in COP4331
+  version: 1.0.0
+  title: Contacts Website
+  # put the contact info for your development or API team
+  contact:
+    email: mi544275@ucf.com
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+tags:
+- name: admins
+  description: Secured Admin-only calls
+- name: developers
+  description: Operations available to regular developers
+- name: users
+  description: Operations available to regular users
+
+paths:
+  /addContact.php:
+    post:
+      tags:
+      - users
+      summary: Adds contact to Contacts table that is associated with the user's id
+      operationId: addContact
+      description: By passing in the required contact information, and userId, you can add a new contact to the contacts table. The row will be associated with the user's id.
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: contactInformatiom
+        description: the information required to add a contact, including userId
+        required: true
+        schema: 
+          $ref: '#/definitions/addContactInfo'
+      responses:
+        200:
+          description: Returns 'Contact created' message and id
+          schema:
+            $ref: '#/definitions/addContactResponse'
+        400:
+          description: bad input parameter
+        404:
+          description: User not found for given userId
+        500:
+          description: server errors encountered such as issues connecting to and making requests from the database or decoding data from the JSON file
+  /viewContacts.php:
+    get:
+      tags:
+        - users
+      summary: Returns the first and last name and id number for a given userId
+      operationId: viewContacts
+      description: Pass the userId as a parameter on the url, and receive a JSON with the first name, last name, and id number for every contact associated with that userId.
+      produces:
+        - application/JSON
+      parameters:
+        - in: query
+          name: userId
+          description: The unique identifier tied to the user.
+          required: true
+          type: integer
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/viewContacts'
+        400:
+          description: bad input parameter
+        500:
+          description: server errors encountered such as issues connecting to and making requests from the database
+  /viewContact.php:
+    get:
+      tags:
+        - users
+      summary: Returns the first and last name and id number for a given userId
+      operationId: viewContact
+      description: Pass the userId as a parameter on the url, and receive a JSON with the first name, last name, and id number for every contact associated with that userId.
+      produces:
+        - application/JSON
+      parameters:
+        - in: query
+          name: userId
+          description: The unique identifier tied to the user.
+          required: true
+          type: integer
+        - in: query
+          name: id
+          description: The unique identifier tied to the contact.
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Contact is pulled success
+          schema:
+            $ref: '#/definitions/viewContact'
+        400:
+          description: bad input parameter
+        404:
+          description: contact not found
+        500:
+          description: server errors encountered such as issues connecting to and making requests from the database
+  /login.php:
+    post:
+      tags:
+        - users
+      summary: login to user account
+      operationId: doLogin
+      description: logs into Personal Contact Manager
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: loginItem
+          description: login
+          schema:
+            $ref: '#/definitions/login'
+      responses:
+        200:
+          description: OK
+        404:
+          description: URL not found
+        500: 
+          description: Server Error
+  /createAccount.php:
+    post:
+      tags:
+      - users
+      summary: Create a user account
+      description: Creates a new user account when the login is not already in use.
+      operationId: createAccount
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: account
+        required: true
+        schema:
+          $ref: "#/definitions/createAccountInput"
+      responses:
+        "200":
+          description: Account created
+          schema:
+            $ref: "#/definitions/accountResponse"
+        "400":
+          description: Required field is missing or empty
+          schema:
+            $ref: "#/definitions/accountResponse"
+        "500":
+          description: Server configuration, database, or request error
+          schema:
+            $ref: "#/definitions/accountResponse"
+  /deleteContact.php:
+    post:
+      tags:
+      - users
+      summary: Delete a contact
+      description: Deletes a contact only when it belongs to the supplied user ID.
+      operationId: deleteContact
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: contact
+        required: true
+        schema:
+          $ref: "#/definitions/contactIdentifier"
+      responses:
+        "200":
+          description: Contact deleted; the error property is an empty string
+          schema:
+            $ref: "#/definitions/errorResponse"
+        "400":
+          description: User ID or contact ID is missing
+          schema:
+            $ref: "#/definitions/errorResponse"
+        "404":
+          description: Contact was not found for the supplied user and contact IDs
+          schema:
+            $ref: "#/definitions/errorResponse"
+        "500":
+          description: Server or database error
+          schema:
+            $ref: "#/definitions/errorResponse"
+  /searchContact.php:
+    post:
+      tags:
+      - users
+      summary: Search a user's contacts
+      description: Searches by a general term, first name, or last name. A user ID and at least one search field are required.
+      operationId: searchContact
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: search
+        required: true
+        schema:
+          $ref: "#/definitions/searchInput"
+      responses:
+        "200":
+          description: Matching contacts
+          schema:
+            $ref: "#/definitions/searchResponse"
+        "400":
+          description: User ID or search criteria is missing
+          schema:
+            $ref: "#/definitions/errorResponse"
+        "500":
+          description: Server configuration or database error
+          schema:
+            $ref: "#/definitions/errorResponse"
+
+definitions:
+  addContactInfo: 
+    type: object
+    required:
+      - firstName
+      - lastName
+      - email
+      - phoneNumber
+      - userId
+    properties:
+      firstName:
+        type: string
+        example: John
+      lastName:
+        type: string
+        example: Doe
+      phoneNumber:
+        type: string
+        example: (555)-555-5555
+      email:
+        type: string
+        example: name@gmail.com
+      userId:
+        type: integer
+        example: 1
+  addContactResponse:
+    type: object
+    required:
+      - message
+      - id
+    properties:
+      message:
+        type: string
+        example: Contact created
+      id:
+        type: number
+        description: the unique identifier for the contact's row on the Contacts table
+        example: 1
+  login:
+    type: object
+    required:
+      - login
+      - password
+    properties:
+      login:
+        type: string
+        example: "JohnD"
+      password:
+        type: string
+        example: "password"
+  viewContact:
+    type: object
+    required:
+      - FirstName
+      - LastName
+      - Phone
+      - Email
+      - date_added
+    properties:
+      FirstName:
+        type: string
+        example: John
+      LastName:
+        type: string
+        example: Doe
+      Phone:
+        type: string
+        example: (555)-555-5555
+      Email:
+        type: string
+        example: name@gmail.com
+      date_added:
+        type: string
+        example: 2026-09-17 (year-month-day)
+
+  viewContacts:
+    type: object
+    required:
+      - FirstName
+      - LastName
+      - id
+    properties:
+      FirstName:
+        type: string
+        example: John
+      LastName:
+        type: string
+        example: Doe
+      id:
+        type: integer
+        example: 1
+
+  createAccountInput:
+    type: object
+    required:
+    - firstName
+    - lastName
+    - login
+    - password
+    - phoneNumber
+    properties:
+      firstName:
+        type: string
+        example: John
+      lastName:
+        type: string
+        example: Doe
+      login:
+        type: string
+        example: JohnD
+      password:
+        type: string
+        format: password
+        example: password
+      phoneNumber:
+        type: string
+        example: (555)-555-5555
+  searchInput:
+    type: object
+    required:
+    - userId
+    properties:
+      search:
+        type: string
+        example: John
+      firstName:
+        type: string
+        example: John
+      lastName:
+        type: string
+        example: Doe
+      userId:
+        type: integer
+        example: 1
+    description: At least one of search, firstName, or lastName must also be supplied.
+
+  messageResponse:
+    type: object
+    properties:
+      message:
+        type: string
+        example: Contact updated successfully
+      error:
+        type: string
+        example: ""
+  errorResponse:
+    type: object
+    required:
+    - error
+    properties:
+      error:
+        type: string
+        example: Contact not found.
+
+  searchResponse:
+    type: object
+    required:
+    - results
+    - error
+    properties:
+      results:
+        type: array
+        items:
+          $ref: "#/definitions/searchResult"
+      error:
+        type: string
+        example: ""
+  searchResult:
+    type: object
+    required:
+    - id
+    - firstName
+    - lastName
+    - phoneNumber
+    properties:
+      id:
+        type: integer
+        example: 1
+      firstName:
+        type: string
+        example: John
+      lastName:
+        type: string
+        example: Doe
+      phoneNumber:
+        type: string
+        example: (555)-555-5555
+  contactIdentifier:
+    type: object
+    required:
+    - userId
+    - id
+    properties:
+      userId:
+        type: integer
+        example: 1
+      id:
+        type: integer
+        example: 1
+  accountResponse:
+    type: object
+    required:
+    - ID
+    - firstName
+    - lastName
+    - login
+    - phoneNumber
+    - error
+    properties:
+      ID:
+        type: integer
+        example: 1
+      firstName:
+        type: string
+        example: John
+      lastName:
+        type: string
+        example: Doe
+      login:
+        type: string
+        example: JohnD
+      phoneNumber:
+        type: string
+        example: (555)-555-5555
+      error:
+        type: string
+        example: ""
+
+host: cop4431-jonathonf.online
+basePath: /POOSD-Contact-Manager-Team-6/backend/api
+schemes:
+  - http
