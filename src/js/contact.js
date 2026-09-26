@@ -26,16 +26,21 @@ function getUserId() {
 // Load contact details when the page is loaded
 async function loadContact() {
   const userId = getUserId();
-  const contactId = getQueryValue('id') || localStorage.getItem('selectedContactId') || localStorage.getItem('lastSavedContactId');
-
-  // If contactId does not exist display message
-  if (!contactId) {
-    const contactName = document.getElementById('contactName');
-    if (contactName) contactName.textContent = 'No contact selected';
+  if (userId === null || userId === undefined || Number.isNaN(userId)) {
     return;
   }
 
-  const url = `${apiBase}/viewContact.php?userId=${userId}&id=${contactId}`;
+  const contactId = getQueryValue('id') || localStorage.getItem('selectedContactId') || localStorage.getItem('lastSavedContactId');
+  const isUserProfile = !contactId || contactId === 'null' || contactId === 'undefined';
+
+  let url = new URL(`${apiBase}/viewContact.php`);
+  if (isUserProfile) {
+    url = new URL(`${apiBase}/userContact.php`);
+  } else {
+    url.searchParams.set('id', String(contactId));
+  }
+
+  url.searchParams.set('userId', String(userId));
 
   // Fetch contact details from view contact API
   try {
@@ -61,26 +66,40 @@ async function loadContact() {
       throw new Error('Contact not found.');
     }
 
-    // Display contact details on page and show N/A for missing values
     const fullName = `${contact.FirstName || ''} ${contact.LastName || ''}`.trim();
     const contactName = document.getElementById('contactName');
     if (contactName) contactName.textContent = fullName || 'Unnamed contact';
 
     const numberField = document.getElementById('numberInput');
-    if (numberField) numberField.textContent = contact.Phone || 'N/A';
+    if (numberField) numberField.textContent = contact.PhoneNumber || contact.Phone || 'N/A';
 
     const emailField = document.getElementById('emailInput');
-    if (emailField) emailField.textContent = contact.Email || 'N/A';
+    if (emailField) emailField.textContent = contact.Email || contact.Login || 'N/A';
 
     const dateField = document.getElementById('dateCreated');
-    if (dateField) dateField.textContent = contact.date_added || 'N/A';
+    const dateBlock = document.querySelector('.date-block');
+    if (dateField) {
+      if (isUserProfile) {
+        dateField.textContent = '';
+        if (dateBlock) dateBlock.style.display = 'none';
+      } else {
+        dateField.textContent = contact.date_added || 'N/A';
+        if (dateBlock) dateBlock.style.display = '';
+      }
+    }
 
-    localStorage.setItem('selectedContactId', contactId);
+    if (contactId) {
+      localStorage.setItem('selectedContactId', String(contactId));
+    } else {
+      localStorage.removeItem('selectedContactId');
+    }
 
     // Set the edit link to include the userId and contactId in the query parameters
+    // If the contactId is not available, only include the userId in the edit link
     const editLink = document.querySelector('.edit-button');
     if (editLink) {
-      editLink.href = `editPage.html?userId=${userId}&id=${contactId}`;
+      const editUrl = contactId ? `editPage.html?userId=${userId}&id=${contactId}` : `editPage.html?userId=${userId}`;
+      editLink.href = editUrl;
     }
 
     // Set the back button to return to the homepage with the userId in the query parameters

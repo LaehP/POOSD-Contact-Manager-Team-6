@@ -33,6 +33,11 @@
     $contactEmail = trim((string)$inData["email"] ?? "");
     $contactPhoneNumber = trim((string)$inData["phoneNumber"] ?? "");
 
+    if ($userId === "" || $contactEmail === "" || $contactFirstName === "" || $contactLastName === "" || $contactPhoneNumber === "") {
+        http_response_code(400);
+        returnWithError("Required information must not be blank.");
+        exit;
+    }
 
      // connect to the database
     if (!class_exists("mysqli"))
