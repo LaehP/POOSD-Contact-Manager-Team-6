@@ -1,4 +1,3 @@
-//current
 const apiBase = 'http://cop4431-jonathonf.online/backend/api';
 
 let allContacts = [];
