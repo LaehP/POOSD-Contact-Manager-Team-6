@@ -34,7 +34,7 @@ function normalizeContact(contact) {
 }
 
 function readLoginCookie() {
-  const name = "user=";
+  const name = 'user=';
   const decodedCookie = decodeURIComponent(document.cookie);
   const ca = decodedCookie.split(';');
   for (let i = 0; i < ca.length; i++) {
@@ -133,8 +133,7 @@ async function updateProfileArrowTarget() {
         localStorage.setItem('selectedContactId', String(contact.id));
         localStorage.setItem('contactId', String(contact.id));
       };
-    }
-    else{
+    } else {
       profileArrow.href = `contactPage.html?userId=${userId}`;
     }
   } catch (error) {
@@ -228,12 +227,12 @@ async function searchServerContacts(searchTerm) {
 
     const data = await response.json();
 
-    if (data.error === "No Records Found" || !data.results) {
+    if (data.error === 'No Records Found' || !data.results) {
       renderContacts([]);
       return;
     }
 
-    if (data.error && data.error !== "") {
+    if (data.error && data.error !== '') {
       renderContacts([]);
       return;
     }
