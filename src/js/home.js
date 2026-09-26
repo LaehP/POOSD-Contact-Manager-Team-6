@@ -135,12 +135,11 @@ async function updateProfileArrowTarget() {
         localStorage.setItem('contactId', String(contact.id));
       };
     }
-  } catch (error) {
-    if (userNameEl) {
-      userNameEl.textContent = 'Your Name';
+    else{
+      profileArrow.href = `contactPage.html?userId=${userId}`;
     }
-
-    profileArrow.href = `contactPage.html?userId=${userId}`;
+  } catch (error) {
+    userNameEl.textContent = 'Your Name';
   }
 }
 
