@@ -16,10 +16,11 @@ A Linux-based server running Apache, PHP, and MySQL is required. You must also h
 
 AI Assistance Disclosure:
 This project was developed with assistance from generative AI tools:
-- **Tool**: 
-- **Dates**: 
-- **Scope**:
-- **Use**: 
+- **Tool**: GitHub Copilot (Microsoft, github.com/features/copilot)
+- **Dates**: September 20-22, 2026
+- **Scope**: Troubleshooting logic for the contact and edit pages, including form handling and saved contact updates
+- **Use**: Used for debugging support and guidance on logic issues
+
 All AI-generated code was reviewed, tested, and modified to meet
 assignment requirements. Final implementation reflects my understanding
 of the concepts.
