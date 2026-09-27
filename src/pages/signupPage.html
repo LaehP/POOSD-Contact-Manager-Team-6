@@ -15,6 +15,7 @@
                 <h2>Create your account</h2>
             </div>
 
+            <!-- Required user information input boxes -->
             <div class="text-input">
                 <label for="name-box">Name<span style="color: red;">*</span></label>
                 <input type="text" id="name-box" name="name" placeholder="John Doe">
@@ -35,8 +36,8 @@
                 <input type="text" id="signup-password-box" name="password" placeholder="password">
             </div>
 
+            <!-- Appears if a box is left blank; changes to a success alert if account created successfully -->
             <p id="signup-alert">Fill out all required fields.</p>
-
 
             <button class="submit-button" onclick="createAccount()">Sign Up</button>
             <p class="page-link"><a href="loginPage.html">Back to Login</a></p>

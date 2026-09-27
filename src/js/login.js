@@ -1,10 +1,12 @@
 async function loginValidation (){
+    //pulls required data from input boxes on login page
     const userBox = document.getElementById("login-email-box");
     const passwordBox = document.getElementById("login-password-box");
 
     const email = userBox.value.trim();
     const password = passwordBox.value;
 
+    //POST request sends user credentials to database for verification, if successful, logs user in and redirects to home page
     const response = await fetch("http://cop4431-jonathonf.online/backend/api/login.php", {
         method: "POST",
         headers: {
@@ -16,10 +18,11 @@ async function loginValidation (){
         })
     });
 
-    const data = await response.json();
+    const data = await response.json(); //waiting for process to complete
 
+    //if verification successful, logs user in. If not, displays error message
     if(data.error === ""){
-        window.location.href = "homePage.html";
+        window.location.href = `homePage.html?ID=${data.ID}`;
     }
     else{
         //data error
@@ -32,6 +35,5 @@ async function loginValidation (){
         const alert = document.getElementById("incorrect-login-alert");
         alert.style.display = "block";
     }
-
 
 }

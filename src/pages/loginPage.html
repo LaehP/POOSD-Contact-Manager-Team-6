@@ -15,6 +15,7 @@
                 <h2>Welcome!</h2>
             </div>
 
+            <!-- Required user information input boxes -->
             <div class="text-input">
                 <label for="login-email-box">Email</label>
                 <input type="text" id="login-email-box" name="email" placeholder="example@email.com">
@@ -25,9 +26,9 @@
                 <input type="password" id="login-password-box" name="password" placeholder="password">
             </div>
 
+            <!-- Appears if a box is left blank or incorrect user credentials -->
             <p id="incorrect-login-alert">Incorrect username or password.</p>
 
-            <!-- button will eventually be an onclick but wanted to link for testing -->
             <button class="submit-button" onclick="loginValidation()">Sign In</button>
             <p class="page-link"><a href="signupPage.html">Create Account</a></p>
 
