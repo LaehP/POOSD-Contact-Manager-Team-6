@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Home Page</title>
+        <link rel="stylesheet" href="../assets/fonts.css">
+        <link rel="stylesheet" href="../styles/home.css">
+    </head>
+    <body>
+            <div class="container">
+                <!--Search bar--> 
+                <header class="top-bar">
+                    <div class="search-wrapper">
+                        <img src="../assets/search.png" alt="Search" class="search-icon" width="30" height="30">
+                        <input type="search" id="searchInput" class="search-box" placeholder="Search">
+                    </div>
+                    <a href="#" id="addContactBtn" class="add-btn" aria-label="Add contact">+</a>
+                </header>
+
+                <!--User Profile Banner-->
+                <div class="profile-banner">
+                <div class="profile-info">
+                    <span class="star-icon">★</span>
+                    <span id="userNameDisplay" class="user-name">Your Name</span>
+                </div>
+                <a href="contactPage.html" class="arrow-btn" aria-label="View profile">&gt;</a>
+                </div>
+
+                <!--Section Header-->
+                <div class="section-header">
+                <h2>Contacts</h2>
+                </div>
+
+                <!--Scrollable Contact List-->
+                <div id="contactList" class="contacts-list"></div>
+            </div>
+    <script src="../js/home.js"></script>
+    </body>
+</html>

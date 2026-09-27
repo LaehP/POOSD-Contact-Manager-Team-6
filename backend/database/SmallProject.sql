@@ -31,7 +31,7 @@ CREATE TABLE `Contacts` (
   `UserID` int NOT NULL DEFAULT '0',
   `date_added` date DEFAULT (curdate()),
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `Contacts` (
 
 LOCK TABLES `Contacts` WRITE;
 /*!40000 ALTER TABLE `Contacts` DISABLE KEYS */;
-INSERT INTO `Contacts` VALUES (1,'John','Smith','407-555-0101','john.smith@example.com',1,'2026-09-08'),(2,'Emily','Johnson','407-555-0102','emily.johnson@example.com',1,'2026-09-08'),(3,'Michael','Brown','407-555-0103','michael.brown@example.com',1,'2026-09-08'),(4,'Sarah','Davis','407-555-0104','sarah.davis@example.com',1,'2026-09-08'),(5,'David','Wilson','407-555-0105','david.wilson@example.com',1,'2026-09-08'),(6,'Priya','Patel','321-555-0201','priya.patel@example.com',2,'2026-09-08'),(7,'Arjun','Rao','321-555-0202','arjun.rao@example.com',2,'2026-09-08'),(8,'Neha','Shah','321-555-0203','neha.shah@example.com',2,'2026-09-08'),(9,'Ravi','Kumar','321-555-0204','ravi.kumar@example.com',2,'2026-09-08'),(10,'Anita','Reddy','321-555-0205','anita.reddy@example.com',2,'2026-09-08');
+INSERT INTO `Contacts` VALUES (3,'Michael','Brown','407-555-0103','michael.brown@example.com',1,'2026-09-08'),(4,'Sarah','Davis','407-555-0104','sarah.davis@example.com',1,'2026-09-08'),(5,'David','Wilson','407-555-0105','david.wilson@example.com',1,'2026-09-08'),(6,'Priya','Patel','321-555-0201','priya.patel@example.com',2,'2026-09-08'),(7,'Arjun','Rao','321-555-0202','arjun.rao@example.com',2,'2026-09-08'),(8,'Neha','Shah','321-555-0203','neha.shah@example.com',2,'2026-09-08'),(9,'Ravi','Kumar','321-555-0204','ravi.kumar@example.com',2,'2026-09-08'),(10,'Anita','Reddy','321-555-0205','anita.reddy@example.com',2,'2026-09-08'),(13,'John','Smith','407-555-0101','john@example.com',1,'2026-09-18'),(15,'Melinda','Mai','(123)123-1234','testing@gmail.com',1,'2026-09-21'),(19,'Testing','Test','123-123-1234','idk@gmail.com',14,'2026-09-25');
 /*!40000 ALTER TABLE `Contacts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -57,8 +57,9 @@ CREATE TABLE `Users` (
   `LastName` varchar(50) NOT NULL DEFAULT '',
   `Login` varchar(50) NOT NULL DEFAULT '',
   `Password` varchar(50) NOT NULL DEFAULT '',
+  `PhoneNumber` varchar(50) NOT NULL DEFAULT '',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +68,7 @@ CREATE TABLE `Users` (
 
 LOCK TABLES `Users` WRITE;
 /*!40000 ALTER TABLE `Users` DISABLE KEYS */;
-INSERT INTO `Users` VALUES (1,'Sam','Hill','SamH','Test'),(2,'Sindhu','Sesham','Sindhu','12345');
+INSERT INTO `Users` VALUES (1,'Sam','Hill','SamH','Test',''),(2,'Sindhu','Sesham','Sindhu','12345',''),(3,'Jane','Doe','janedoe99','SecurePassword123',''),(8,'Jane','Doe','janedoe@gmail.com','hi','1234567890'),(9,'Tom','Smith','smithy@gmail.com','tom456','352-796-0089'),(10,'hi','i','hi@gmail.com','com','4563563567'),(11,'hi','ii','gamil','com','1234567890'),(12,'test','3','33@gamil.com','com','3333333333'),(13,'test','1','email@.com','test','00000000'),(14,'Melinda','Mai','melinda@gmail.com','123','123-123-1234'),(15,'Sam','Harris','SamH@gmail.com','123456','123 456 7890'),(16,'John','Doeee','example@gmail.com','testing','123-456-7890'),(17,'Mikayla','Philpot','mikaylagp@hotmail.com','Benji23!','4079613002'),(18,'Sam','Harris','SamHarris@gmail.com','password','444 444 4444'),(19,'Melinda','Mai','meli@gmail.com','1234','123-123-1234');
 /*!40000 ALTER TABLE `Users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -80,4 +81,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-08  2:46:40
+-- Dump completed on 2026-09-25 18:12:06

@@ -5,37 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title> Individual Contact</title>
   <link rel="stylesheet" href="../assets/fonts.css">
-  <link rel="stylesheet" href="../styles/edit.css">
+  <link rel="stylesheet" href="../styles/contact.css">
 </head>
 
-<body>
+<body class="contact-page">
   <div class="screen-card">
     <div class="header">
-      <button class="back-button" id="backButton">^</button>
-      <a class="trash-button" href="editPage.html" aria-label="Edit contact">
+      <a class="back-button" id="backButton" href="homePage.html" aria-label="Back to home page">Back</a>
+      <a class="edit-button" href="editPage.html" aria-label="Edit contact">
         <img src="../assets/Edit.png" alt="Edit" width="30" height="30">
       </a>
     </div>
 
     <div class="form-body">
-      <div class="contact-name" id="contactName">Melinda Mai</div>
+      <div class="contact-name" id="contactName">Loading contact...</div>
 
-      <div class="text-field">
-        <label for="numberInput">Phone Number</label>
-        <input type="text" id="numberInput" placeholder="Phone Number" readonly>
+      <div class="info-row">
+        <span class="info-label">Phone Number:</span>
+        <span class="info-value" id="numberInput">Loading...</span>
       </div>
 
-      <div class="text-field">
-        <label for="emailInput">Email</label>
-        <input type="text" id="emailInput" placeholder="Email" readonly>
+      <div class="info-row email-row">
+        <span class="info-label">Email:</span>
+        <span class="info-value" id="emailInput">Loading...</span>
       </div>
 
-      <div>
-        <div class="date-label">Date Created</div>
-        <div class="date-value" id="dateCreated">09/04/2026</div>
+      <div class="info-row date-block">
+        <span class="info-label">Date Created:</span>
+        <span class="info-value" id="dateCreated">Loading...</span>
       </div>
 
     </div>
   </div>
+  <script src="../js/contact.js"></script>
 </body>
 </html>

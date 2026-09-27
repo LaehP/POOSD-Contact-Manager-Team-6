@@ -1,0 +1,276 @@
+body.contact-page {
+    margin: 0;
+    background: #acd9ee;
+    font-family: "Caveat", cursive;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.contact-page .screen-card {
+    position: relative;
+    background: #FFF8C8;
+    width: 40%;
+    max-width: 764px;
+    min-height: 100vh;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.contact-page .screen-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 60px,
+        rgba(0, 0, 0, 0.10) 60px,
+        rgba(0, 0, 0, 0.10) 62px
+    );
+    pointer-events: none;
+}
+
+.contact-page .header {
+    position: relative;
+    z-index: 1;
+    background: #8cc7e2;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    flex-shrink: 0;
+}
+
+.contact-page .back-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: "Caveat", cursive;
+    font-weight: 600;
+    font-size: 28px;
+    color: black;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 100px;
+    height: 40px;
+    padding: 0;
+    line-height: 1;
+    margin-top: 16px;
+}
+
+.contact-page .back-button::before {
+    content: "^";
+    display: inline-block;
+    font-size: 50px;
+    transform: rotate(270deg);
+    line-height: 2;
+}
+
+.contact-page .form-body {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 70px;
+    padding: 70px 26px 10px 60px;
+    flex: 1;
+    padding-bottom: 80px;
+}
+
+.contact-page .contact-name {
+    font-family: "Caveat", cursive;
+    font-size: 52px;
+    font-weight: 600;
+    color: #000;
+    margin-top: 30px;
+}
+
+.contact-page .info-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    width: 100%;
+    font-family: "Caveat", cursive;
+    font-size: 34px;
+    color: black;
+    line-height: 1.4;
+}
+
+.contact-page .email-row {
+    gap: 2px;
+}
+
+.contact-page .phone-row,
+.contact-page .date-block {
+    gap: 6px;
+}
+
+.contact-page .info-label {
+    min-width: 150px;
+    font-weight: 600;
+}
+
+.contact-page .email-row .info-label {
+    min-width: 100px;
+}
+
+.contact-page .info-value {
+    font-weight: 500;
+    color: #000;
+}
+
+.contact-page .email-row .info-value {
+    transform: translateX(-20px);
+}
+
+.contact-page .date-block {
+    margin-bottom: 80px;
+    align-items: baseline;
+}
+
+.contact-page .edit-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #000;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    opacity: 1;
+}
+
+.contact-page .edit-button:hover {
+    opacity: 0.5;
+}
+
+.contact-page a.edit-button {
+    text-decoration: none;
+}
+
+@media (max-width: 1190px) {
+    body.contact-page {
+        background: #acd9ee;
+    }
+
+    .contact-page .screen-card {
+        width: 50%;
+        max-width: 100%;
+        min-height: 100vh;
+        box-shadow: none;
+    }
+
+    .contact-page .header {
+        background: #8cc7e2;
+        height: 80px;
+        padding: 18px 20px 0;
+        box-shadow: none;
+    }
+
+    .contact-page .back-button {
+        margin-top: -1px;
+        font-size: 24px;
+    }
+
+    .contact-page .form-body {
+        gap: 90px;
+        padding: 85px 18px 40px 18px;
+    }
+
+    .contact-page .contact-name {
+        font-size: 42px;
+        margin-top: 10px;
+    }
+
+    .contact-page .info-row {
+        font-size: 28px;
+        gap: 4px;
+        line-height: 1.3;
+    }
+
+    .contact-page .info-label {
+        min-width: 0;
+    }
+
+    .contact-page .email-row .info-label {
+        min-width: 0;
+    }
+
+    .contact-page .email-row .info-value {
+        transform: translateX(0);
+        min-width: 0;
+    }
+
+    .contact-page .date-block {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 714px) {
+    body.contact-page {
+        background: #FFF8C8;
+    }
+
+    .contact-page .screen-card {
+        width: 100%;
+        max-width: 100%;
+        min-height: 100vh;
+        box-shadow: none;
+    }
+
+    .contact-page .header {
+        background: #8cc7e2;
+        height: 80px;
+        padding: 18px 20px 0;
+        box-shadow: none;
+    }
+
+    .contact-page .back-button {
+        margin-top: -1px;
+        font-size: 24px;
+    }
+
+    .contact-page .form-body {
+        gap: 90px;
+        padding: 85px 18px 40px 18px;
+    }
+
+    .contact-page .contact-name {
+        font-size: 42px;
+        margin-top: 10px;
+    }
+
+    .contact-page .info-row {
+        font-size: 28px;
+        gap: 4px;
+        line-height: 1.3;
+    }
+
+    .contact-page .info-label {
+        min-width: 0;
+    }
+
+    .contact-page .email-row .info-label {
+        min-width: 0;
+    }
+
+    .contact-page .email-row .info-value {
+        transform: translateX(0px);
+        min-width: 0;
+    }
+
+    .contact-page .date-block {
+        margin-bottom: 20px;
+    }
+}
+
