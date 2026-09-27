@@ -18,6 +18,15 @@ const requiredFields = [
 
 const apiBase = 'http://cop4431-jonathonf.online/backend/api';
 
+// Format phone number input to match database format (xxx-xxx-xxxx)
+function formatPhoneNumber(value = '') {
+  const digits = value.replace(/\D/g, '').slice(0, 10);
+
+  if (digits.length <= 3) return digits;
+  if (digits.length <= 6) return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+  return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
+}
+
 function getQueryValue(name) {
   return new URLSearchParams(window.location.search).get(name);
 }
@@ -122,7 +131,7 @@ function setFormValues(contact) {
 
   if (firstName) firstName.value = contact.FirstName || '';
   if (lastName) lastName.value = contact.LastName || '';
-  if (phone) phone.value = contact.Phone || '';
+  if (phone) phone.value = formatPhoneNumber(contact.Phone || contact.PhoneNumber || '');
   if (email) email.value = contact.Email || '';
   if (date) date.textContent = contact.date_added ? contact.date_added : getTodayDateLabel();
 }
@@ -186,6 +195,11 @@ function handleSave() {
     return;
   }
 
+  const phoneInput = document.getElementById('numberInput');
+  if (phoneInput) {
+    phoneInput.value = formatPhoneNumber(phoneInput.value);
+  }
+
   const userId = getUserId();
   const contactId = getQueryValue('id');
   const payload = contactId
@@ -193,7 +207,7 @@ function handleSave() {
         // if editing an existing contact include contactId 
         firstName: document.getElementById('firstNameInput')?.value.trim() || '',
         lastName: document.getElementById('lastNameInput')?.value.trim() || '',
-        phoneNumber: document.getElementById('numberInput')?.value.trim() || '',
+        phoneNumber: phoneInput?.value.trim() || '',
         email: document.getElementById('emailInput')?.value.trim() || '',
         userId,
         id: Number(contactId)
@@ -202,7 +216,7 @@ function handleSave() {
         // if adding a new contact don't include contactId
         firstName: document.getElementById('firstNameInput')?.value.trim() || '',
         lastName: document.getElementById('lastNameInput')?.value.trim() || '',
-        phoneNumber: document.getElementById('numberInput')?.value.trim() || '',
+        phoneNumber: phoneInput?.value.trim() || '',
         email: document.getElementById('emailInput')?.value.trim() || '',
         userId
       };
@@ -327,6 +341,12 @@ setupBackButton();
 
 requiredFields.forEach((field) => {
   if (!field) return;
+
+  if (field.id === 'numberInput') {
+    field.addEventListener('input', () => {
+      field.value = formatPhoneNumber(field.value);
+    });
+  }
   
   // Check for input changes and update the validation message and field highlighting
   field.addEventListener('input', () => {
