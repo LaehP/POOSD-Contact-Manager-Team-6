@@ -128,15 +128,15 @@ paths:
         required: true
         type: integer
       responses:
-        "200":
+        200:
           description: Contact is pulled success
           schema:
             $ref: "#/definitions/userContact"
-        "400":
+        400:
           description: bad input parameter
-        "404":
+        404:
           description: contact not found
-        "500":
+        500:
           description: server errors encountered such as issues connecting to and making requests from the database
   /login.php:
     post:
@@ -180,15 +180,15 @@ paths:
         schema:
           $ref: "#/definitions/createAccountInput"
       responses:
-        "200":
+        200:
           description: Account created
           schema:
             $ref: "#/definitions/accountResponse"
-        "400":
+        400:
           description: Required field is missing or empty
           schema:
             $ref: "#/definitions/accountResponse"
-        "500":
+        500:
           description: Server configuration, database, or request error
           schema:
             $ref: "#/definitions/accountResponse"
@@ -210,19 +210,19 @@ paths:
         schema:
           $ref: "#/definitions/contactIdentifier"
       responses:
-        "200":
+        200:
           description: Contact deleted; the error property is an empty string
           schema:
             $ref: "#/definitions/errorResponse"
-        "400":
+        400:
           description: User ID or contact ID is missing
           schema:
             $ref: "#/definitions/errorResponse"
-        "404":
+        404:
           description: Contact was not found for the supplied user and contact IDs
           schema:
             $ref: "#/definitions/errorResponse"
-        "500":
+        500:
           description: Server or database error
           schema:
             $ref: "#/definitions/errorResponse"
@@ -244,15 +244,15 @@ paths:
         schema:
           $ref: "#/definitions/searchInput"
       responses:
-        "200":
+        200:
           description: Matching contacts
           schema:
             $ref: "#/definitions/searchResponse"
-        "400":
+        400:
           description: User ID or search criteria is missing
           schema:
             $ref: "#/definitions/errorResponse"
-        "500":
+        500:
           description: Server configuration or database error
           schema:
             $ref: "#/definitions/errorResponse"
@@ -275,15 +275,15 @@ paths:
         schema:
           $ref: "#/definitions/createAccountInput"
       responses:
-        "200":
+        200:
           description: Account created
           schema:
             $ref: "#/definitions/accountResponse"
-        "400":
+        400:
           description: Required field is missing or empty
           schema:
             $ref: "#/definitions/accountResponse"
-        "500":
+        500:
           description: "Server configuration, database, or request error"
           schema:
             $ref: "#/definitions/accountResponse"
@@ -305,19 +305,19 @@ paths:
         schema:
           $ref: "#/definitions/contactIdentifier"
       responses:
-        "200":
+        200:
           description: Contact deleted; the error property is an empty string
           schema:
             $ref: "#/definitions/errorResponse"
-        "400":
+        400:
           description: User ID or contact ID is missing
           schema:
             $ref: "#/definitions/errorResponse"
-        "404":
+        404:
           description: Contact was not found for the supplied user and contact IDs
           schema:
             $ref: "#/definitions/errorResponse"
-        "500":
+        500:
           description: Server or database error
           schema:
             $ref: "#/definitions/errorResponse"
@@ -339,15 +339,15 @@ paths:
         schema:
           $ref: "#/definitions/searchInput"
       responses:
-        "200":
+        200:
           description: Matching contacts
           schema:
             $ref: "#/definitions/searchResponse"
-        "400":
+        400:
           description: User ID or search criteria is missing
           schema:
             $ref: "#/definitions/errorResponse"
-        "500":
+        500:
           description: Server configuration or database error
           schema:
             $ref: "#/definitions/errorResponse"
