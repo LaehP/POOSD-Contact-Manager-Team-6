@@ -1,12 +1,14 @@
-//current
+//AI-assisted: Initial implementation suggested by Google Gemini and Cursor (reviewed and modified)
 const apiBase = 'http://cop4431-jonathonf.online/backend/api';
 
 let allContacts = [];
 
+//Returns URL parameter
 function getQueryValue(name) {
   return new URLSearchParams(window.location.search).get(name);
 }
 
+//Saves valid user ID; Otherwise, redirects to login page, if possible
 function getUserId() {
   const userId = getQueryValue('ID') || localStorage.getItem('ID');
 
@@ -24,8 +26,8 @@ function getUserId() {
   return Number(userId);
 }
 
-// Normalizes records between viewContacts.php (PascalCase) and searchContact.php (camelCase)
-function normalizeContact(contact) {
+// standardizes contact data for consistent formatting
+function standardizeContact(contact) {
   return {
     id: contact.id ?? contact.ID,
     firstName: contact.firstName ?? contact.FirstName ?? '',
@@ -34,8 +36,9 @@ function normalizeContact(contact) {
   };
 }
 
+//Returns user's name, if saved in a cookie
 function readLoginCookie() {
-  const name = "user=";
+  const name = 'user=';
   const decodedCookie = decodeURIComponent(document.cookie);
   const ca = decodedCookie.split(';');
   for (let i = 0; i < ca.length; i++) {
@@ -58,6 +61,7 @@ function readLoginCookie() {
   };
 }
 
+//Searches elsewhere for and returns user's name, if found
 function getStoredUserData() {
   let first = localStorage.getItem('firstName') || localStorage.getItem('FirstName') || localStorage.getItem('first_name') || '';
   let last = localStorage.getItem('lastName') || localStorage.getItem('LastName') || localStorage.getItem('last_name') || '';
@@ -73,7 +77,7 @@ function getStoredUserData() {
     if (!last && cookieData.lastName) last = cookieData.lastName;
   }
 
-  // Check JSON user blobs in localStorage
+  // Check JSON
   const jsonKeys = ['user', 'userData', 'currentUser', 'userInfo', 'loginData'];
   for (const key of jsonKeys) {
     if (first && last) break;
@@ -90,6 +94,7 @@ function getStoredUserData() {
   return { firstName: first, lastName: last };
 }
 
+//Updates the profile banner with the user's name
 function setupProfileBanner() {
   const { firstName, lastName } = getStoredUserData();
   const displayName = `${firstName} ${lastName}`.trim();
@@ -100,54 +105,50 @@ function setupProfileBanner() {
   }
 }
 
-function updateProfileArrowTarget() {
+//Updates the profile arrow link and banner with user's information
+async function updateProfileArrowTarget() {
   const userId = getUserId();
   const profileArrow = document.querySelector('.profile-banner .arrow-btn');
   const userNameEl = document.getElementById('userNameDisplay');
+
   if (!profileArrow || !userId) return;
 
-  const { firstName, lastName } = getStoredUserData();
+  try {
+    const response = await fetch(`${apiBase}/userContact.php?userId=${userId}`);
+    const data = await response.json();
 
-  let targetContact = null;
+    if (!response.ok || data.error) {
+      throw new Error(data.error || 'Unable to load user contact.');
+    }
 
-  // 1. Try matching by name if available
-  if (firstName || lastName) {
-    targetContact = allContacts.find((c) => {
-      const firstMatch = firstName && c.firstName.toLowerCase() === firstName.toLowerCase();
-      const lastMatch = lastName && c.lastName.toLowerCase() === lastName.toLowerCase();
-      return (firstName && lastName) ? (firstMatch && lastMatch) : (firstMatch || lastMatch);
-    });
+    const rawContact = Array.isArray(data)
+      ? data[0]
+      : data.contact || data.result || data.results?.[0] || data;
+
+    const contact = standardizeContact(rawContact);
+
+    const displayName = `${contact.firstName} ${contact.lastName}`.trim();
+    if (userNameEl && displayName) {
+      userNameEl.textContent = displayName;
+    }
+
+    if (contact.id) {
+      profileArrow.href =
+        `contactPage.html?userId=${userId}&id=${contact.id}&contactId=${contact.id}`;
+
+      profileArrow.onclick = () => {
+        localStorage.setItem('selectedContactId', String(contact.id));
+        localStorage.setItem('contactId', String(contact.id));
+      };
+    } else {
+      profileArrow.href = `contactPage.html?userId=${userId}`;
+    }
+  } catch (error) {
+    userNameEl.textContent = 'Your Name';
   }
-
-  // Do not fall back to an arbitrary contact. If there is no exact self-match,
-  // keep the arrow functional but leave the detail page to show its generic profile state.
-  if (!targetContact) {
-    profileArrow.href = `contactPage.html?userId=${userId}`;
-    profileArrow.setAttribute('aria-disabled', 'false');
-    profileArrow.onclick = () => {
-      localStorage.setItem('selectedContactId', String(targetContact.id));
-      localStorage.setItem('contactId', String(targetContact.id));
-    };
-    return;
-  }
-
-  // If a contact record was matched and the banner is still showing placeholder, update it
-  if (userNameEl && (userNameEl.textContent === 'Your Name' || !userNameEl.textContent.trim())) {
-    userNameEl.textContent = `${targetContact.firstName} ${targetContact.lastName}`.trim();
-  }
-
-  // Provide both ?id= and ?contactId= so contactPage.html picks it up regardless of parameter name
-  profileArrow.href = `contactPage.html?userId=${userId}&id=${targetContact.id}&contactId=${targetContact.id}`;
-  profileArrow.setAttribute('aria-disabled', 'false');
-
-  // Store in all standard localStorage keys contactPage.js may read
-  profileArrow.onclick = () => {
-    localStorage.setItem('selectedContactId', String(targetContact.id));
-    localStorage.setItem('contactId', String(targetContact.id));
-    localStorage.setItem('id', String(targetContact.id));
-  };
 }
 
+//Displays contacts names with arrow link
 function renderContacts(contacts) {
   const list = document.getElementById('contactList');
   const userId = getUserId();
@@ -161,7 +162,7 @@ function renderContacts(contacts) {
   }
 
   contacts.forEach((rawContact) => {
-    const contact = normalizeContact(rawContact);
+    const contact = standardizeContact(rawContact);
 
     const row = document.createElement('div');
     row.className = 'contact-item';
@@ -207,10 +208,9 @@ async function loadContacts() {
     if (data.error && data.error !== '') throw new Error(data.error);
 
     const rawList = Array.isArray(data) ? data : (data.results || data.contacts || []);
-    allContacts = rawList.map(normalizeContact);
+    allContacts = rawList.map(standardizeContact);
     renderContacts(allContacts);
-
-    // Update banner links and profile name once contacts are loaded
+    
     updateProfileArrowTarget();
   } catch (error) {
     const list = document.getElementById('contactList');
@@ -220,7 +220,7 @@ async function loadContacts() {
   }
 }
 
-// Queries searchContact.php with partial matching
+//searches for contacts using searchContact.php
 async function searchServerContacts(searchTerm) {
   const userId = getUserId();
   if (!userId) return;
@@ -234,22 +234,23 @@ async function searchServerContacts(searchTerm) {
 
     const data = await response.json();
 
-    if (data.error === "No Records Found" || !data.results) {
+    if (data.error === 'No Records Found' || !data.results) {
       renderContacts([]);
       return;
     }
 
-    if (data.error && data.error !== "") {
+    if (data.error && data.error !== '') {
       renderContacts([]);
       return;
     }
 
-    renderContacts(data.results.map(normalizeContact));
+    renderContacts(data.results.map(standardizeContact));
   } catch (error) {
     renderContacts([]);
   }
 }
 
+//Links edit page to the add contact button
 function setupNavigation() {
   const userId = getUserId();
   if (!userId) return;
@@ -260,6 +261,7 @@ function setupNavigation() {
   }
 }
 
+//Displays all contacts if search bar is empty; Otherwise, displays partially matched results
 function setupSearch() {
   const searchInput = document.getElementById('searchInput');
   if (!searchInput) return;
@@ -274,6 +276,7 @@ function setupSearch() {
   });
 }
 
+//Sets up page functionality after HTML is loaded
 document.addEventListener('DOMContentLoaded', async () => {
   setupNavigation();
   setupProfileBanner();

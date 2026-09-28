@@ -1,3 +1,4 @@
+/*AI-assisted: Initial implementation suggested by Google Gemini (reviewed and modified)*/
 body { 
     background-color: #acd9ee;
     font-family: "Caveat", cursive;
@@ -137,4 +138,17 @@ body {
     text-decoration: none;
     padding: 0 4px;
     user-select: none;
+}
+
+@media (max-width: 714px) {
+    body{
+        background: #FFF8C8;
+    }
+
+    .container{
+        width: 100%;
+        max-width: 100%;
+        min-height: 100vh;
+        box-shadow: none;
+    }
 }

@@ -30,8 +30,8 @@ async function loadContact() {
     return;
   }
 
-  const contactId = getQueryValue('id') || localStorage.getItem('selectedContactId') || localStorage.getItem('lastSavedContactId');
-  const isUserProfile = !contactId || contactId === 'null' || contactId === 'undefined';
+const contactId = getQueryValue('contactId') || getQueryValue('id');
+const isUserProfile = !contactId || contactId === 'null' || contactId === 'undefined';
 
   let url = new URL(`${apiBase}/viewContact.php`);
   if (isUserProfile) {

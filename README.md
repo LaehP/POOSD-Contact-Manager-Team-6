@@ -17,9 +17,19 @@ A Linux-based server running Apache, PHP, and MySQL is required. You must also h
 AI Assistance Disclosure:
 This project was developed with assistance from generative AI tools:
 - **Tool**: GitHub Copilot (Microsoft, github.com/features/copilot)
-- **Dates**: September 20-22, 2026
-- **Scope**: Troubleshooting logic for the contact and edit pages, including form handling and saved contact updates
-- **Use**: Used for debugging support and guidance on logic issues
+- **Dates**: September 20-25, 2026
+- **Scope**: Troubleshooting logic for the contact and edit pages, including form handling and saved contact updates. Debugging home page.
+- **Use**: Used for debugging support and guidance on logic issues and diagnosing errors.
+
+- **Tool**: Google Gemini (Google, gemini.google.com)
+- **Dates**: September 19-27, 2026
+- **Scope**: Initial implementation and debugging of home page (reviewed and modified).
+- **Use**: Used for help setting up code and diagnosing errors.
+
+- **Tool**: Cursor (SpaceXAI, cursor.com)
+- **Dates**: September 22-24, 2026
+- **Scope**: Initial implementation of home page (reviewed and modified).
+- **Use**: Used for help setting up code.
 
 All AI-generated code was reviewed, tested, and modified to meet
 assignment requirements. Final implementation reflects my understanding
