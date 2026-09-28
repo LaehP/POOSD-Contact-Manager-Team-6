@@ -17,9 +17,10 @@ A Linux-based server running Apache, PHP, and MySQL is required. You must also h
 AI Assistance Disclosure:
 This project was developed with assistance from generative AI tools:
 - **Tool**: GitHub Copilot (Microsoft, github.com/features/copilot)
-- **Dates**: September 14-25, 2026
-- **Scope**: Troubleshooting logic for the contact and edit pages, including form handling and saved contact updates. Debugging home page. Troubleshooting issues with APIs not working on the LAMP droplet, diagnosing syntax errors in SQL statements, and providing suggestions on specific syntax and error checks to use when updating values in the database.  
-- **Use**: Used for debugging support and guidance on logic issues and diagnosing errors. It was also used to help debug issues with the viewContact, viewContacts, addContact, and editContact APIs not working on the LAMP droplet. It was used to diagnose syntax errors in the viewContacts API, and suggest the specific syntax and error checks needed for updating a value in the database in the editContact API.
+- **Dates**: September 1-25, 2026
+- **Scope**: Troubleshooting logic for the contact and edit pages, including form handling and saved contact updates and. Debugging home page. Troubleshooting issues with APIs not working on the LAMP droplet, diagnosing syntax errors in SQL statements, reasons for 500 internal server errors, what to generally return for successful completion, created some test examples, and providing suggestions on specific syntax and error checks to use when updating values in the database.  
+- **Use**: Used for debugging support and guidance on logic issues and diagnosing errors. It was also used to help debug issues with the viewContact, viewContacts, addContact, and editContact APIs not working on the LAMP droplet. It was used to diagnose syntax errors in the viewContacts API, and suggest the specific syntax and error checks needed for updating a value in the database in the editContact API. It was used to help process and diagnose long error logs. Helped with Partial Matching logic as it was returning every contact and not a user's contacts. Helped clarify what can and should be returned with some successful completions when adding checks throughout code. It wrote simple testing blocks to use in POSTMAN so we could test for failures and successes.
+
 
 - **Tool**: Google Gemini (Google, gemini.google.com)
 - **Dates**: September 19-27, 2026
