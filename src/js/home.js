@@ -1,3 +1,4 @@
+//AI-assisted: Initial implementation suggested by Google Gemini and Cursor (reviewed and modified)
 const apiBase = 'http://cop4431-jonathonf.online/backend/api';
 
 let allContacts = [];
