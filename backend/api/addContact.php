@@ -4,7 +4,7 @@
     require_once __DIR__ . "/databaseConnection.php";
     require_once __DIR__ . "/frontendInfo.php";
 
-    // connect to the database
+    // Make sure LAMP droplet has necessary extensions enabled
     if (!class_exists("mysqli"))
     {
         http_response_code(500);
@@ -12,6 +12,7 @@
         exit;
     }
 
+    // attempt to connect to database
     try {
         $conn = connectToDatabase();
     }
@@ -22,11 +23,13 @@
     }
 
     $inData = getRequestInfo(); 
+    // check for potential failures with the JSON functions
     if ($inData === null) {
         http_response_code(500);
         returnWithError("JSON decode failed");
         exit;
     }
+    // make sure necessary information is present
     if (!array_key_exists("firstName", $inData) || !array_key_exists("lastName", $inData) || !array_key_exists("phoneNumber", $inData) || !array_key_exists("email", $inData)) {
         http_response_code(400);
         returnWithError("Minimum contact information not defined. Must include first name, last name, phone number, and email.");
@@ -37,12 +40,14 @@
         returnWithError("User ID must be defined");
         exit;
     }
+    // add fallback values in case values are null
     $contactFirstName = trim((string)$inData["firstName"] ?? "");
     $contactLastName = trim((string)$inData["lastName"] ?? "");
     $contactPhoneNumber = trim((string)$inData["phoneNumber"] ?? "");
     $contactEmail = trim((string)$inData["email"] ?? "");
     $userId = trim((string)$inData["userId"] ?? "");
 
+    // ensure values being inserted are not blank
     if ($userId === "" || $contactEmail === "" || $contactFirstName === "" || $contactLastName === "" || $contactPhoneNumber === "") {
         http_response_code(400);
         returnWithError("Required information must not be blank.");
@@ -56,6 +61,7 @@
         exit;
     }
     else {
+        // ensure the account that the contact is being added to exists
         $userCheck = $conn->prepare("SELECT id FROM Users WHERE id = ? LIMIT 1");
         if ($userCheck === false) {
             http_response_code(500);
@@ -64,6 +70,7 @@
             exit;
         }
         $userCheck->bind_param("i", $userId);
+        // check for potential failures with statement execution
         if ($userCheck->execute()) {
             $userResult =$userCheck->get_result();
             $returnedUserId = $userResult -> fetch_assoc();
@@ -84,6 +91,7 @@
             $conn->close();
             exit;
         }
+        // attempt to insert information into database
         $contactInsertion = $conn->prepare("INSERT into Contacts (FirstName, LastName, Phone, Email, UserID) VALUES(?, ?, ?, ?, ?) ");
         $contactInsertion->bind_param("ssssi", $contactFirstName, $contactLastName, $contactPhoneNumber, $contactEmail, $userId);
         if($contactInsertion->execute()) {
