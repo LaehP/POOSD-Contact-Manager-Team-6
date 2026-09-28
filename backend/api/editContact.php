@@ -5,12 +5,13 @@
 
 
     $inData = getRequestInfo();
-
+    // check for potential failures with the JSON functions
     if ($inData === null) {
         http_response_code(500);
         returnWithError("JSON decode failed");
         exit;
     }
+    // make sure necessary information is present
     if (!array_key_exists("firstName", $inData) || !array_key_exists("lastName", $inData) || !array_key_exists("phoneNumber", $inData) || !array_key_exists("email", $inData)) {
         http_response_code(400);
         returnWithError("Minimum contact information not defined. Must include first name, last name, phone number, and email.");
@@ -26,6 +27,7 @@
         returnWithError("Contact ID must be defined");
         exit;
     }
+    // add fallback values in case values are null
     $contactId = trim((string)$inData["id"] ?? "");
     $userId = trim((string)$inData["userId"] ?? "");
     $contactFirstName = trim((string)$inData["firstName"] ?? "");
@@ -33,13 +35,14 @@
     $contactEmail = trim((string)$inData["email"] ?? "");
     $contactPhoneNumber = trim((string)$inData["phoneNumber"] ?? "");
 
+    // ensure values being inserted are not blank
     if ($userId === "" || $contactEmail === "" || $contactFirstName === "" || $contactLastName === "" || $contactPhoneNumber === "") {
         http_response_code(400);
         returnWithError("Required information must not be blank.");
         exit;
     }
 
-     // connect to the database
+    // Make sure LAMP droplet has necessary extensions enabled
     if (!class_exists("mysqli"))
     {
         http_response_code(500);
@@ -64,6 +67,7 @@
 
     }
     else {
+        // attempt to update information in database
         $contactUpdate = $conn->prepare("UPDATE Contacts SET FirstName = ?, LastName = ?, Phone = ?, Email = ? WHERE UserID = ? AND ID = ?");
         if ($contactUpdate === false) {
             http_response_code(500);
@@ -74,10 +78,12 @@
         $contactUpdate->bind_param("ssssii", $contactFirstName, $contactLastName, $contactPhoneNumber, $contactEmail, $userId, $contactId);
         if ($contactUpdate->execute()) {
             $updatedRows = $contactUpdate->affected_rows;
+            // check for potential error signals
             if ($updatedRows === -1) {
                 http_response_code(500);
                 returnWithError("An unexpected error occured. Unable to determine update result.");
             }
+            // determine why no rows were changed (missing or the exact same) and act accordingly
             else if ($updatedRows === 0) {
                 $checkContact = $conn->prepare(
                     "SELECT ID FROM Contacts WHERE userID = ? AND ID = ?"

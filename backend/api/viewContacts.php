@@ -3,7 +3,7 @@
     require_once __DIR__ . "/databaseConnection.php";
     require_once __DIR__ . "/frontendInfo.php";
 
-     // connect to the database
+    // Make sure LAMP droplet has necessary extensions enabled
     if (!class_exists("mysqli"))
     {
         http_response_code(500);
@@ -11,7 +11,7 @@
         exit;
     }
 
-
+    // attempt to connect to database
     try {
         $conn = connectToDatabase();
     }
@@ -21,6 +21,7 @@
         exit;
     }
 
+    // make sure necessary parameters are present
     if (empty($_GET['userId'])) {
         http_response_code(400);
         returnWithError("User ID must be defined");
@@ -35,6 +36,7 @@
         exit;
     }
     else {
+        // attempt to select information from database
         $pullContacts = $conn->prepare("SELECT FirstName, LastName, ID FROM Contacts WHERE UserID = ?");
         if ($pullContacts === false) {
             http_response_code(500);
@@ -56,6 +58,7 @@
         $pullContacts->close();
         $conn->close();
         $contactData = [];
+        // put each row of contact data found into array
         while ($row = $result->fetch_assoc()) {
             $contactData[] = $row;
         }
