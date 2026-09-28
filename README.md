@@ -17,9 +17,9 @@ A Linux-based server running Apache, PHP, and MySQL is required. You must also h
 AI Assistance Disclosure:
 This project was developed with assistance from generative AI tools:
 - **Tool**: GitHub Copilot (Microsoft, github.com/features/copilot)
-- **Dates**: September 20-25, 2026
-- **Scope**: Troubleshooting logic for the contact and edit pages, including form handling and saved contact updates. Debugging home page.
-- **Use**: Used for debugging support and guidance on logic issues and diagnosing errors.
+- **Dates**: September 14-25, 2026
+- **Scope**: Troubleshooting logic for the contact and edit pages, including form handling and saved contact updates. Debugging home page. Troubleshooting issues with APIs not working on the LAMP droplet, diagnosing syntax errors in SQL statements, and providing suggestions on specific syntax and error checks to use when updating values in the database.  
+- **Use**: Used for debugging support and guidance on logic issues and diagnosing errors. It was also used to help debug issues with the viewContact, viewContacts, addContact, and editContact APIs not working on the LAMP droplet. It was used to diagnose syntax errors in the viewContacts API, and suggest the specific syntax and error checks needed for updating a value in the database in the editContact API.
 
 - **Tool**: Google Gemini (Google, gemini.google.com)
 - **Dates**: September 19-27, 2026

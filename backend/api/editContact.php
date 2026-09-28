@@ -78,6 +78,7 @@
         $contactUpdate->bind_param("ssssii", $contactFirstName, $contactLastName, $contactPhoneNumber, $contactEmail, $userId, $contactId);
         if ($contactUpdate->execute()) {
             $updatedRows = $contactUpdate->affected_rows;
+            // initial implementation suggested by Copilot (modified and reviewed)
             // check for potential error signals
             if ($updatedRows === -1) {
                 http_response_code(500);
